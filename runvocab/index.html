@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RunVocab — генератор аудио</title>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lamejs@1/lame.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
 
@@ -274,22 +276,42 @@
         .dl-card.on { display: block; }
         .dl-list { display: flex; flex-direction: column; gap: 10px; }
         .dl-link {
-            display: flex; align-items: center; gap: 14px;
+            display: flex; align-items: flex-start; gap: 14px;
             padding: 16px 18px;
             background: var(--bg);
             border: 1px solid var(--border);
             border-radius: 10px;
             color: var(--text);
-            text-decoration: none;
-            cursor: pointer;
-            transition: all .2s;
         }
-        .dl-link:hover { border-color: var(--green); background: rgba(63,185,80,0.05); }
-        .dl-ico { font-size: 28px; }
-        .dl-info { flex: 1; }
+        .dl-ico { font-size: 28px; padding-top: 2px; }
+        .dl-info { flex: 1; min-width: 0; }
         .dl-name { font-size: 17px; font-weight: 700; }
         .dl-meta { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
-        .dl-cta { font-size: 13px; font-weight: 700; color: var(--green); letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0; }
+        .dl-info audio {
+            width: 100%; margin-top: 10px; height: 36px;
+            filter: invert(1) hue-rotate(90deg) brightness(0.85);
+            border-radius: 6px;
+        }
+        .dl-cta {
+            font-size: 13px; font-weight: 700; color: var(--green);
+            letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0;
+            text-decoration: none; padding-top: 4px;
+        }
+        .dl-cta:hover { text-decoration: underline; }
+
+        /* Quota */
+        .quota {
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 10px;
+            padding: 7px 10px;
+            border-radius: 6px;
+            display: none;
+        }
+        .quota.on { display: flex; align-items: center; gap: 8px; }
+        .quota-bar-wrap { flex: 1; height: 4px; background: var(--dim); border-radius: 2px; overflow: hidden; }
+        .quota-bar { height: 100%; border-radius: 2px; transition: width .4s; }
+        .quota-text { white-space: nowrap; color: var(--muted); }
 
         /* Error */
         .err { display: none; padding: 14px 16px; background: rgba(248,81,73,.1); border: 1px solid rgba(248,81,73,.3); border-radius: 8px; color: var(--red); font-size: 14px; font-family: 'JetBrains Mono', monospace; line-height: 1.5; }
@@ -342,6 +364,10 @@
             <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">elevenlabs.io → Developers → API Keys</a> → Create Key<br>
             Разрешения: <strong>Text to Speech</strong> (write) + <strong>Voices</strong> (read)
         </div>
+        <div class="quota" id="quota">
+            <div class="quota-bar-wrap"><div class="quota-bar" id="quotaBar"></div></div>
+            <span class="quota-text" id="quotaText"></span>
+        </div>
     </div>
 
     <!-- VOICES -->
@@ -353,7 +379,12 @@
                 <div class="voices-col-label">🇬🇧 Английский</div>
                 <div class="voice-list" id="enVoices">
                     <label class="voice-opt sel">
-                        <input type="radio" name="enVoice" value="nPczCjzI2devNBz1zQrb" checked>
+                        <input type="radio" name="enVoice" value="TX3LPaxmHKxFdv7VOQHJ" checked>
+                        <span class="vflag">🇺🇸</span>
+                        <div><div class="vname">Liam</div><div class="vdesc">муж · американский</div></div>
+                    </label>
+                    <label class="voice-opt">
+                        <input type="radio" name="enVoice" value="nPczCjzI2devNBz1zQrb">
                         <span class="vflag">🇺🇸</span>
                         <div><div class="vname">Brian</div><div class="vdesc">муж · американский</div></div>
                     </label>
@@ -361,16 +392,6 @@
                         <input type="radio" name="enVoice" value="EXAVITQu4vr4xnSDxMaL">
                         <span class="vflag">🇬🇧</span>
                         <div><div class="vname">Sarah</div><div class="vdesc">жен · британский</div></div>
-                    </label>
-                    <label class="voice-opt">
-                        <input type="radio" name="enVoice" value="TX3LPaxmHKxFdv7VOQHJ">
-                        <span class="vflag">🇺🇸</span>
-                        <div><div class="vname">Liam</div><div class="vdesc">муж · американский</div></div>
-                    </label>
-                    <label class="voice-opt">
-                        <input type="radio" name="enVoice" value="XB0fDUnXU5powFXDhCwa">
-                        <span class="vflag">🇬🇧</span>
-                        <div><div class="vname">Charlotte</div><div class="vdesc">жен · британский</div></div>
                     </label>
                 </div>
             </div>
@@ -389,11 +410,6 @@
                         <div><div class="vname">Дэниел</div><div class="vdesc">муж · глубокий</div></div>
                     </label>
                     <label class="voice-opt">
-                        <input type="radio" name="ruVoice" value="ru_female_2" data-id="jsCqWAovK2LkecY7zXl4">
-                        <span class="vflag">🇷🇺</span>
-                        <div><div class="vname">Фрейя</div><div class="vdesc">жен · мягкий</div></div>
-                    </label>
-                    <label class="voice-opt">
                         <input type="radio" name="ruVoice" value="ru_male_2" data-id="IKne3meq5aSn9XLyUdCD">
                         <span class="vflag">🇷🇺</span>
                         <div><div class="vname">Чарли</div><div class="vdesc">муж · разговорный</div></div>
@@ -407,11 +423,12 @@
     <!-- WORDS -->
     <div class="card">
         <div class="card-title">Список слов</div>
-        <textarea id="wordsInput" placeholder="apple — яблоко&#10;run — бежать&#10;beautiful — красивый&#10;argue — спорить&#10;acknowledge — признавать"></textarea>
+        <textarea id="wordsInput" placeholder="apple,яблоко&#10;queue,очередь&#10;run,бежать&#10;nephew,племянник"></textarea>
         <div class="words-meta">
-            <span class="fmt">формат: english — русский</span>
+            <span class="fmt">Формат CSV: english,русский</span>
             <span class="cnt" id="wCount"></span>
         </div>
+        <input class="input" type="text" id="listName" placeholder="Word List Name" style="margin-top:10px">
     </div>
 
     <!-- PAUSES -->
@@ -421,15 +438,15 @@
             <div class="pause-item">
                 <label>слово → перевод</label>
                 <div class="pause-ctrl">
-                    <input type="range" id="p1" min="0.5" max="5" step="0.5" value="1">
+                    <input type="range" id="p1" min="0.5" max="8" step="0.25" value="1">
                     <span class="rval" id="p1v">1с</span>
                 </div>
             </div>
             <div class="pause-item">
                 <label>между парами</label>
                 <div class="pause-ctrl">
-                    <input type="range" id="p2" min="1" max="8" step="0.5" value="2.5">
-                    <span class="rval" id="p2v">2.5с</span>
+                    <input type="range" id="p2" min="0.5" max="8" step="0.25" value="1">
+                    <span class="rval" id="p2v">1с</span>
                 </div>
             </div>
         </div>
@@ -476,6 +493,47 @@
 <script>
     const $ = id => document.getElementById(id);
 
+    // ── API key cookie ────────────────────────────────────────
+    const COOKIE_KEY = 'rv_api_key';
+    const getCookie = name => (document.cookie.split(';').map(c => c.trim())
+        .find(c => c.startsWith(name + '=')) || '').slice(name.length + 1);
+    const setCookie = (name, val, days) => {
+        const exp = new Date(Date.now() + days * 864e5).toUTCString();
+        document.cookie = `${name}=${encodeURIComponent(val)};expires=${exp};path=/;SameSite=Strict;Secure`;
+    };
+
+    const isValidKey = key => /^sk_[a-f0-9]{40,}$/i.test(key);
+
+    const savedKey = getCookie(COOKIE_KEY);
+    if (savedKey) { $('apiKey').value = decodeURIComponent(savedKey); if (isValidKey(savedKey)) checkQuota(savedKey); }
+
+    $('apiKey').addEventListener('change', () => {
+        const key = $('apiKey').value.trim();
+        setCookie(COOKIE_KEY, key, 365);
+        if (isValidKey(key)) checkQuota(key); else $('quota').classList.remove('on');
+    });
+
+    // ── Quota check ───────────────────────────────────────────
+    async function checkQuota(apiKey) {
+        try {
+            const res = await fetch('https://api.elevenlabs.io/v1/user/subscription', {
+                headers: { 'xi-api-key': apiKey }
+            });
+            if (!res.ok) { $('quota').classList.remove('on'); return; }
+            const data = await res.json();
+            const used = data.character_count ?? 0;
+            const limit = data.character_limit ?? 0;
+            const pct = limit ? Math.round(used / limit * 100) : 0;
+            const free = (limit - used).toLocaleString('ru');
+            const color = pct > 80 ? 'var(--red)' : pct > 50 ? '#e3b341' : 'var(--green)';
+            $('quotaBar').style.width = pct + '%';
+            $('quotaBar').style.background = color;
+            $('quotaText').style.color = color;
+            $('quotaText').textContent = `${free} симв. осталось (${100 - pct}%)`;
+            $('quota').classList.add('on');
+        } catch(_) { $('quota').classList.remove('on'); }
+    }
+
     // ── Eye toggle ────────────────────────────────────────────
     $('eyeBtn').onclick = () => {
         const i = $('apiKey');
@@ -497,18 +555,20 @@
         const el = $(id), vl = $(vid);
         const upd = () => {
             const v = parseFloat(el.value);
-            vl.textContent = Number.isInteger(v) ? v + 'с' : v.toFixed(1) + 'с';
+            vl.textContent = parseFloat(v.toFixed(2)) + 'с';
         };
         el.oninput = upd; upd();
     });
 
     // ── Word parser ───────────────────────────────────────────
     function parseWords(text) {
-        return text.split('\n')
-            .map(l => l.trim()).filter(Boolean)
-            .map(l => {
-                const m = l.match(/^(.+?)\s*[—–\-,]\s*(.+)$/);
-                return m ? { en: m[1].trim(), ru: m[2].trim() } : null;
+        const result = Papa.parse(text.trim(), { skipEmptyLines: true });
+        return result.data
+            .map(cols => {
+                const en = (cols[0] || '').trim();
+                const ru = (cols[1] || '').trim();
+                if (!en && !ru) return null;
+                return { en, ru };
             }).filter(Boolean);
     }
 
@@ -643,24 +703,34 @@
         return out;
     }
 
-    // ── AudioBuffer → WAV Blob ────────────────────────────────
-    function toWav(buf) {
-        const ch = buf.numberOfChannels, sr = buf.sampleRate, n = buf.length;
-        const ab = new ArrayBuffer(44 + n * ch * 2);
-        const v = new DataView(ab);
-        const ws = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o+i, s.charCodeAt(i)); };
-        ws(0,'RIFF'); v.setUint32(4, 36+n*ch*2, true);
-        ws(8,'WAVE'); ws(12,'fmt ');
-        v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,ch,true);
-        v.setUint32(24,sr,true); v.setUint32(28,sr*ch*2,true);
-        v.setUint16(32,ch*2,true); v.setUint16(34,16,true);
-        ws(36,'data'); v.setUint32(40,n*ch*2,true);
-        let o = 44;
-        for (let i = 0; i < n; i++) for (let c = 0; c < ch; c++) {
-            const s = Math.max(-1, Math.min(1, buf.getChannelData(c)[i]));
-            v.setInt16(o, s < 0 ? s*0x8000 : s*0x7FFF, true); o+=2;
+    // ── AudioBuffer → MP3 Blob ────────────────────────────────
+    function toMp3(buf, bitrate = 128) {
+        const ch = buf.numberOfChannels, sr = buf.sampleRate;
+        const encoder = new lamejs.Mp3Encoder(ch, sr, bitrate);
+        const blockSize = 1152;
+        const mp3Data = [];
+
+        function f32ToI16(f32) {
+            const i16 = new Int16Array(f32.length);
+            for (let i = 0; i < f32.length; i++) {
+                const s = Math.max(-1, Math.min(1, f32[i]));
+                i16[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+            }
+            return i16;
         }
-        return new Blob([ab], { type: 'audio/wav' });
+
+        const left = f32ToI16(buf.getChannelData(0));
+        const right = ch > 1 ? f32ToI16(buf.getChannelData(1)) : null;
+
+        for (let i = 0; i < buf.length; i += blockSize) {
+            const l = left.subarray(i, i + blockSize);
+            const chunk = right ? encoder.encodeBuffer(l, right.subarray(i, i + blockSize))
+                                : encoder.encodeBuffer(l);
+            if (chunk.length) mp3Data.push(chunk);
+        }
+        const tail = encoder.flush();
+        if (tail.length) mp3Data.push(tail);
+        return new Blob(mp3Data, { type: 'audio/mp3' });
     }
 
     // ── Fetch all audio in parallel, then build two tracks ────
@@ -669,6 +739,7 @@
     async function generate() {
         const apiKey = $('apiKey').value.trim();
         const words = parseWords($('wordsInput').value);
+        const listName = $('listName').value.trim() || 'Word List';
         const p1 = parseFloat($('p1').value);
         const p2 = parseFloat($('p2').value);
 
@@ -702,8 +773,8 @@
             const tasks = [];
 
             words.forEach(({ en, ru }) => {
-                tasks.push({ text: en, voiceId: enId, lang: 'en' });
-                tasks.push({ text: ru, voiceId: ruId, lang: 'ru' });
+                if (en) tasks.push({ text: en, voiceId: enId, lang: 'en' });
+                if (ru) tasks.push({ text: ru, voiceId: ruId, lang: 'ru' });
             });
 
             // Deduplicate
@@ -757,12 +828,14 @@
             function buildTrack(mode) {
                 const bufs = [];
                 words.forEach(({ en, ru }, i) => {
-                    const enBuf = clips[`${enId}::${en}`];
-                    const ruBuf = clips[`${ruId}::${ru}`];
+                    const enBuf = en ? clips[`${enId}::${en}`] : null;
+                    const ruBuf = ru ? clips[`${ruId}::${ru}`] : null;
                     if (mode === 'ru-en') {
-                        bufs.push(ruBuf, sil1, enBuf);
+                        if (ruBuf) bufs.push(ruBuf);
+                        if (enBuf) { if (ruBuf) bufs.push(sil1); bufs.push(enBuf); }
                     } else {
-                        bufs.push(enBuf, sil1, ruBuf);
+                        if (enBuf) bufs.push(enBuf);
+                        if (ruBuf) { if (enBuf) bufs.push(sil1); bufs.push(ruBuf); }
                     }
                     if (i < words.length - 1) bufs.push(sil2);
                 });
@@ -781,27 +854,28 @@
 
             // ── Step 3: create download links ─────────────────────
             const tracks = [
-                { buf: track1, label: 'РУ → АНГ', fname: 'ru-en.wav', flag: '🇷🇺→🇬🇧' },
-                { buf: track2, label: 'АНГ → РУ', fname: 'en-ru.wav', flag: '🇬🇧→🇷🇺' },
+                { buf: track1, label: 'РУ → АНГ', fname: `${listName} ru-en.mp3`, flag: '🇷🇺→🇬🇧' },
+                { buf: track2, label: 'АНГ → РУ', fname: `${listName} en-ru.mp3`, flag: '🇬🇧→🇷🇺' },
             ];
 
             for (const t of tracks) {
-                const wav = toWav(t.buf);
-                const url = URL.createObjectURL(wav);
+                const mp3 = toMp3(t.buf);
+                const url = URL.createObjectURL(mp3);
                 const dur = Math.round(t.buf.duration);
                 const mm = Math.floor(dur/60), ss = String(dur%60).padStart(2,'0');
-                const mb = (wav.size/1024/1024).toFixed(1);
+                const mb = (mp3.size/1024/1024).toFixed(1);
 
-                const a = document.createElement('a');
-                a.href = url; a.download = t.fname; a.className = 'dl-link';
-                a.innerHTML = `
+                const div = document.createElement('div');
+                div.className = 'dl-link';
+                div.innerHTML = `
         <div class="dl-ico">${t.flag}</div>
         <div class="dl-info">
           <div class="dl-name">${t.label}</div>
-          <div class="dl-meta">${words.length} слов · ${mm}:${ss} · ${mb} MB · WAV</div>
+          <div class="dl-meta">${words.length} слов · ${mm}:${ss} · ${mb} MB · MP3</div>
+          <audio controls src="${url}"></audio>
         </div>
-        <div class="dl-cta">↓ Скачать</div>`;
-                $('dlList').appendChild(a);
+        <a href="${url}" download="${t.fname}" class="dl-cta">↓ Скачать</a>`;
+                $('dlList').appendChild(div);
             }
 
             $('dlCard').classList.add('on');
@@ -815,6 +889,7 @@
 
         $('genBtn').disabled = false;
         $('genBtn').innerHTML = '▶ Сгенерировать ещё раз';
+        checkQuota(apiKey);
     }
 
     function showErr(msg) {

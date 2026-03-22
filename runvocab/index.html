@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RunVocab — генератор аудио</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #21262d;
+            --green: #3fb950;
+            --blue: #58a6ff;
+            --red: #f85149;
+            --text: #e6edf3;
+            --muted: #8b949e;
+            --dim: #21262d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Barlow Condensed', sans-serif;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; height: 300px;
+            background: radial-gradient(ellipse 70% 100% at 50% -20%, rgba(63,185,80,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px 28px;
+        }
+
+        .logo {
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--green);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: clamp(38px, 9vw, 60px);
+            font-weight: 900;
+            letter-spacing: -1px;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        h1 em { color: var(--green); font-style: normal; }
+        .subtitle { font-size: 16px; color: var(--muted); }
+
+        .wrap {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+        }
+
+        /* API Key */
+        .key-row { display: flex; gap: 8px; }
+        .input {
+            flex: 1;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            padding: 10px 14px;
+            outline: none;
+            transition: border-color .2s;
+            width: 100%;
+        }
+        .input:focus { border-color: var(--green); }
+        .input::placeholder { color: var(--muted); }
+
+        .btn-icon {
+            background: var(--dim);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            border-radius: 8px;
+            padding: 10px 13px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all .2s;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .btn-icon:hover { color: var(--text); border-color: var(--green); }
+
+        .hint { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+        .hint a { color: var(--blue); text-decoration: none; }
+        .hint a:hover { text-decoration: underline; }
+
+        /* Two-column voice section */
+        .voices-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 480px) { .voices-cols { grid-template-columns: 1fr; } }
+
+        .voices-col-label {
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--muted);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .voice-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .voice-opt {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 9px 12px;
+            cursor: pointer;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+        }
+        .voice-opt:hover { border-color: var(--muted); }
+        .voice-opt.sel { border-color: var(--green); background: rgba(63,185,80,0.08); }
+        .voice-opt input { display: none; }
+        .vflag { font-size: 18px; line-height: 1; }
+        .vname { font-size: 14px; font-weight: 700; line-height: 1.2; }
+        .vdesc { font-size: 11px; color: var(--muted); }
+
+        /* Words */
+        textarea {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            padding: 12px 14px;
+            outline: none;
+            resize: vertical;
+            min-height: 160px;
+            line-height: 1.75;
+            transition: border-color .2s;
+        }
+        textarea:focus { border-color: var(--green); }
+        textarea::placeholder { color: var(--muted); }
+
+        .words-meta { display: flex; justify-content: space-between; margin-top: 8px; }
+        .fmt { font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+        .cnt { font-size: 12px; color: var(--green); font-family: 'JetBrains Mono', monospace; }
+
+        /* Pauses */
+        .pause-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .pause-item label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+        .pause-ctrl { display: flex; align-items: center; gap: 10px; }
+
+        input[type=range] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--dim);
+            outline: none;
+            cursor: pointer;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            background: var(--green);
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(63,185,80,0.4);
+        }
+        .rval {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--green);
+            min-width: 32px;
+            text-align: right;
+        }
+
+        /* Button */
+        .btn-gen {
+            width: 100%;
+            padding: 18px;
+            background: var(--green);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .btn-gen:hover:not(:disabled) {
+            background: #4ec860;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(63,185,80,0.25);
+        }
+        .btn-gen:disabled { background: var(--dim); color: var(--muted); cursor: not-allowed; transform: none; }
+
+        /* Progress */
+        .prog-card { display: none; }
+        .prog-card.on { display: block; }
+        .prog-list { display: flex; flex-direction: column; gap: 10px; }
+        .prog-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        .prog-ico { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
+        .prog-body { flex: 1; min-width: 0; }
+        .prog-name { font-size: 14px; font-weight: 700; }
+        .prog-sub { font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; margin-top: 2px; min-height: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .prog-bar-wrap { height: 3px; background: var(--dim); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+        .prog-bar { height: 100%; background: var(--green); border-radius: 2px; transition: width .4s; width: 0%; }
+
+        /* Downloads */
+        .dl-card { display: none; }
+        .dl-card.on { display: block; }
+        .dl-list { display: flex; flex-direction: column; gap: 10px; }
+        .dl-link {
+            display: flex; align-items: center; gap: 14px;
+            padding: 16px 18px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .dl-link:hover { border-color: var(--green); background: rgba(63,185,80,0.05); }
+        .dl-ico { font-size: 28px; }
+        .dl-info { flex: 1; }
+        .dl-name { font-size: 17px; font-weight: 700; }
+        .dl-meta { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+        .dl-cta { font-size: 13px; font-weight: 700; color: var(--green); letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0; }
+
+        /* Error */
+        .err { display: none; padding: 14px 16px; background: rgba(248,81,73,.1); border: 1px solid rgba(248,81,73,.3); border-radius: 8px; color: var(--red); font-size: 14px; font-family: 'JetBrains Mono', monospace; line-height: 1.5; }
+        .err.on { display: block; }
+
+        /* Cache info */
+        .cache-info {
+            font-size: 12px;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            padding: 8px 12px;
+            background: rgba(63,185,80,0.05);
+            border: 1px solid rgba(63,185,80,0.15);
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+        .cache-info.on { display: block; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spin {
+            display: inline-block; width: 15px; height: 15px;
+            border: 2px solid rgba(0,0,0,.2);
+            border-top-color: #000;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+            vertical-align: middle;
+            margin-right: 7px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="logo">▶ RunVocab</div>
+    <h1>Слова для <em>бега</em></h1>
+    <p class="subtitle">Оба языка — нейтив от ElevenLabs</p>
+</div>
+
+<div class="wrap">
+
+    <!-- API KEY -->
+    <div class="card">
+        <div class="card-title">ElevenLabs API Key</div>
+        <div class="key-row">
+            <input class="input" type="password" id="apiKey" placeholder="sk_xxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+            <button class="btn-icon" id="eyeBtn" title="Показать">👁</button>
+        </div>
+        <div class="hint">
+            <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">elevenlabs.io → Developers → API Keys</a> → Create Key<br>
+            Разрешения: <strong>Text to Speech</strong> (write) + <strong>Voices</strong> (read)
+        </div>
+    </div>
+
+    <!-- VOICES -->
+    <div class="card">
+        <div class="card-title">Голоса</div>
+        <div class="voices-cols">
+            <!-- English -->
+            <div>
+                <div class="voices-col-label">🇬🇧 Английский</div>
+                <div class="voice-list" id="enVoices">
+                    <label class="voice-opt sel">
+                        <input type="radio" name="enVoice" value="nPczCjzI2devNBz1zQrb" checked>
+                        <span class="vflag">🇺🇸</span>
+                        <div><div class="vname">Brian</div><div class="vdesc">муж · американский</div></div>
+                    </label>
+                    <label class="voice-opt">
+                        <input type="radio" name="enVoice" value="EXAVITQu4vr4xnSDxMaL">
+                        <span class="vflag">🇬🇧</span>
+                        <div><div class="vname">Sarah</div><div class="vdesc">жен · британский</div></div>
+                    </label>
+                    <label class="voice-opt">
+                        <input type="radio" name="enVoice" value="TX3LPaxmHKxFdv7VOQHJ">
+                        <span class="vflag">🇺🇸</span>
+                        <div><div class="vname">Liam</div><div class="vdesc">муж · американский</div></div>
+                    </label>
+                    <label class="voice-opt">
+                        <input type="radio" name="enVoice" value="XB0fDUnXU5powFXDhCwa">
+                        <span class="vflag">🇬🇧</span>
+                        <div><div class="vname">Charlotte</div><div class="vdesc">жен · британский</div></div>
+                    </label>
+                </div>
+            </div>
+            <!-- Russian -->
+            <div>
+                <div class="voices-col-label">🇷🇺 Русский</div>
+                <div class="voice-list" id="ruVoices">
+                    <label class="voice-opt sel">
+                        <input type="radio" name="ruVoice" value="ru_female_1" data-id="pFZP5JQG7iQjIQuC4Bku" checked>
+                        <span class="vflag">🇷🇺</span>
+                        <div><div class="vname">Лили</div><div class="vdesc">жен · нейтральный</div></div>
+                    </label>
+                    <label class="voice-opt">
+                        <input type="radio" name="ruVoice" value="ru_male_1" data-id="onwK4e9ZLuTAKqWW03F9">
+                        <span class="vflag">🇷🇺</span>
+                        <div><div class="vname">Дэниел</div><div class="vdesc">муж · глубокий</div></div>
+                    </label>
+                    <label class="voice-opt">
+                        <input type="radio" name="ruVoice" value="ru_female_2" data-id="jsCqWAovK2LkecY7zXl4">
+                        <span class="vflag">🇷🇺</span>
+                        <div><div class="vname">Фрейя</div><div class="vdesc">жен · мягкий</div></div>
+                    </label>
+                    <label class="voice-opt">
+                        <input type="radio" name="ruVoice" value="ru_male_2" data-id="IKne3meq5aSn9XLyUdCD">
+                        <span class="vflag">🇷🇺</span>
+                        <div><div class="vname">Чарли</div><div class="vdesc">муж · разговорный</div></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="hint" style="margin-top:12px">Все голоса — eleven_multilingual_v2, произношение нейтив-уровня</div>
+    </div>
+
+    <!-- WORDS -->
+    <div class="card">
+        <div class="card-title">Список слов</div>
+        <textarea id="wordsInput" placeholder="apple — яблоко&#10;run — бежать&#10;beautiful — красивый&#10;argue — спорить&#10;acknowledge — признавать"></textarea>
+        <div class="words-meta">
+            <span class="fmt">формат: english — русский</span>
+            <span class="cnt" id="wCount"></span>
+        </div>
+    </div>
+
+    <!-- PAUSES -->
+    <div class="card">
+        <div class="card-title">Паузы</div>
+        <div class="pause-grid">
+            <div class="pause-item">
+                <label>слово → перевод</label>
+                <div class="pause-ctrl">
+                    <input type="range" id="p1" min="0.5" max="5" step="0.5" value="1">
+                    <span class="rval" id="p1v">1с</span>
+                </div>
+            </div>
+            <div class="pause-item">
+                <label>между парами</label>
+                <div class="pause-ctrl">
+                    <input type="range" id="p2" min="1" max="8" step="0.5" value="2.5">
+                    <span class="rval" id="p2v">2.5с</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ERROR -->
+    <div class="err" id="err"></div>
+
+    <!-- GENERATE -->
+    <button class="btn-gen" id="genBtn">▶ Сгенерировать аудио</button>
+
+    <!-- PROGRESS -->
+    <div class="card prog-card" id="progCard">
+        <div class="card-title">Генерация</div>
+        <div class="prog-list">
+            <div class="prog-item">
+                <div class="prog-ico" id="ico1">⏳</div>
+                <div class="prog-body">
+                    <div class="prog-name">🇷🇺 → 🇬🇧 &nbsp;РУ–АНГ</div>
+                    <div class="prog-sub" id="sub1">ожидание...</div>
+                    <div class="prog-bar-wrap"><div class="prog-bar" id="bar1"></div></div>
+                </div>
+            </div>
+            <div class="prog-item">
+                <div class="prog-ico" id="ico2">⏳</div>
+                <div class="prog-body">
+                    <div class="prog-name">🇬🇧 → 🇷🇺 &nbsp;АНГ–РУ</div>
+                    <div class="prog-sub" id="sub2">ожидание...</div>
+                    <div class="prog-bar-wrap"><div class="prog-bar" id="bar2"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="cache-info" id="cacheInfo"></div>
+    </div>
+
+    <!-- DOWNLOADS -->
+    <div class="card dl-card" id="dlCard">
+        <div class="card-title">Готово — скачай файлы</div>
+        <div class="dl-list" id="dlList"></div>
+    </div>
+
+</div>
+
+<script>
+    const $ = id => document.getElementById(id);
+
+    // ── Eye toggle ────────────────────────────────────────────
+    $('eyeBtn').onclick = () => {
+        const i = $('apiKey');
+        i.type = i.type === 'password' ? 'text' : 'password';
+    };
+
+    // ── Voice option highlight ────────────────────────────────
+    document.querySelectorAll('.voice-list').forEach(list => {
+        list.querySelectorAll('.voice-opt').forEach(el => {
+            el.addEventListener('click', () => {
+                list.querySelectorAll('.voice-opt').forEach(v => v.classList.remove('sel'));
+                el.classList.add('sel');
+            });
+        });
+    });
+
+    // ── Sliders ───────────────────────────────────────────────
+    [['p1','p1v'],['p2','p2v']].forEach(([id, vid]) => {
+        const el = $(id), vl = $(vid);
+        const upd = () => {
+            const v = parseFloat(el.value);
+            vl.textContent = Number.isInteger(v) ? v + 'с' : v.toFixed(1) + 'с';
+        };
+        el.oninput = upd; upd();
+    });
+
+    // ── Word parser ───────────────────────────────────────────
+    function parseWords(text) {
+        return text.split('\n')
+            .map(l => l.trim()).filter(Boolean)
+            .map(l => {
+                const m = l.match(/^(.+?)\s*[—–\-,]\s*(.+)$/);
+                return m ? { en: m[1].trim(), ru: m[2].trim() } : null;
+            }).filter(Boolean);
+    }
+
+    $('wordsInput').oninput = () => {
+        const n = parseWords($('wordsInput').value).length;
+        $('wCount').textContent = n ? `${n} слов` : '';
+    };
+
+    // ── ElevenLabs TTS ────────────────────────────────────────
+    // Cache to avoid double-fetching same word for both tracks
+    const audioCache = new Map();
+
+    async function tts(text, voiceId, apiKey) {
+        const key = `${voiceId}::${text}`;
+        if (audioCache.has(key)) return audioCache.get(key).slice(0);
+
+        const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+            method: 'POST',
+            headers: {
+                'xi-api-key': apiKey,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                text,
+                model_id: 'eleven_multilingual_v2',
+                voice_settings: { stability: 0.45, similarity_boost: 0.80, style: 0.0, use_speaker_boost: true }
+            })
+        });
+
+        if (!res.ok) {
+            let msg = `ElevenLabs ошибка ${res.status}`;
+            try {
+                const e = await res.json();
+                msg = e?.detail?.message || e?.detail || msg;
+            } catch(_) {}
+            throw new Error(msg);
+        }
+
+        const buf = await res.arrayBuffer();
+        audioCache.set(key, buf.slice(0));
+        return buf;
+    }
+
+    // ── Get selected voice IDs ────────────────────────────────
+    function getVoiceIds() {
+        const enId = document.querySelector('input[name=enVoice]:checked').value;
+        const ruRadio = document.querySelector('input[name=ruVoice]:checked');
+        const ruId = ruRadio.getAttribute('data-id');
+        return { enId, ruId };
+    }
+
+    // ── Trim silence from both ends of an AudioBuffer ────────
+    // MP3 decoded via decodeAudioData has encoder/decoder padding (~0.5–1s)
+    // This removes leading and trailing silence below the threshold.
+    function trimSilence(buf, threshold = 0.01, padSec = 0.04) {
+        const sr = buf.sampleRate;
+        const ch = buf.numberOfChannels;
+        const data = buf.getChannelData(0); // use channel 0 for detection
+        const pad = Math.ceil(padSec * sr);  // small pad to avoid cutting breath
+
+        // Find first sample above threshold
+        let start = 0;
+        for (let i = 0; i < data.length; i++) {
+            if (Math.abs(data[i]) > threshold) { start = Math.max(0, i - pad); break; }
+        }
+
+        // Find last sample above threshold
+        let end = data.length;
+        for (let i = data.length - 1; i >= 0; i--) {
+            if (Math.abs(data[i]) > threshold) { end = Math.min(data.length, i + pad); break; }
+        }
+
+        if (end <= start) return buf; // all silence, return as-is
+
+        const trimmed = buf.context
+            ? buf.context.createBuffer(ch, end - start, sr)
+            : new AudioBuffer({ numberOfChannels: ch, length: end - start, sampleRate: sr });
+
+        // fallback: we'll trim in the concat step using offsets
+        // Actually AudioBuffer has no .context ref in all browsers, so we pass ctx separately
+        return { start, end, buf }; // return marker object
+    }
+
+    // ── Trim + decode helper ──────────────────────────────────
+    async function decodeAndTrim(ctx, arrayBuffer, threshold = 0.01, padSec = 0.05) {
+        const full = await ctx.decodeAudioData(arrayBuffer.slice(0));
+        const sr = full.sampleRate;
+        const ch = full.numberOfChannels;
+        const data = full.getChannelData(0);
+        const pad = Math.ceil(padSec * sr);
+
+        let start = 0;
+        for (let i = 0; i < data.length; i++) {
+            if (Math.abs(data[i]) > threshold) { start = Math.max(0, i - pad); break; }
+        }
+
+        let end = data.length;
+        for (let i = data.length - 1; i >= 0; i--) {
+            if (Math.abs(data[i]) > threshold) { end = Math.min(data.length, i + pad + 1); break; }
+        }
+
+        if (end <= start) return full;
+
+        const out = ctx.createBuffer(ch, end - start, sr);
+        for (let c = 0; c < ch; c++) {
+            out.getChannelData(c).set(full.getChannelData(c).subarray(start, end));
+        }
+        return out;
+    }
+
+    // ── Silence buffer ────────────────────────────────────────
+    function mkSilence(ctx, sec) {
+        const n = Math.ceil(ctx.sampleRate * Math.max(0.05, sec));
+        return ctx.createBuffer(1, n, ctx.sampleRate);
+    }
+
+    // ── Concat AudioBuffers ───────────────────────────────────
+    function concatBufs(ctx, bufs) {
+        const valid = bufs.filter(Boolean);
+        if (!valid.length) return ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+        const ch = Math.max(...valid.map(b => b.numberOfChannels));
+        const total = valid.reduce((s, b) => s + b.length, 0);
+        const out = ctx.createBuffer(ch, total, ctx.sampleRate);
+        let off = 0;
+        for (const b of valid) {
+            for (let c = 0; c < ch; c++) {
+                const src = c < b.numberOfChannels ? b.getChannelData(c) : new Float32Array(b.length);
+                out.getChannelData(c).set(src, off);
+            }
+            off += b.length;
+        }
+        return out;
+    }
+
+    // ── AudioBuffer → WAV Blob ────────────────────────────────
+    function toWav(buf) {
+        const ch = buf.numberOfChannels, sr = buf.sampleRate, n = buf.length;
+        const ab = new ArrayBuffer(44 + n * ch * 2);
+        const v = new DataView(ab);
+        const ws = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o+i, s.charCodeAt(i)); };
+        ws(0,'RIFF'); v.setUint32(4, 36+n*ch*2, true);
+        ws(8,'WAVE'); ws(12,'fmt ');
+        v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,ch,true);
+        v.setUint32(24,sr,true); v.setUint32(28,sr*ch*2,true);
+        v.setUint16(32,ch*2,true); v.setUint16(34,16,true);
+        ws(36,'data'); v.setUint32(40,n*ch*2,true);
+        let o = 44;
+        for (let i = 0; i < n; i++) for (let c = 0; c < ch; c++) {
+            const s = Math.max(-1, Math.min(1, buf.getChannelData(c)[i]));
+            v.setInt16(o, s < 0 ? s*0x8000 : s*0x7FFF, true); o+=2;
+        }
+        return new Blob([ab], { type: 'audio/wav' });
+    }
+
+    // ── Fetch all audio in parallel, then build two tracks ────
+    $('genBtn').onclick = generate;
+
+    async function generate() {
+        const apiKey = $('apiKey').value.trim();
+        const words = parseWords($('wordsInput').value);
+        const p1 = parseFloat($('p1').value);
+        const p2 = parseFloat($('p2').value);
+
+        $('err').classList.remove('on');
+        if (!apiKey) return showErr('Введи API ключ ElevenLabs');
+        if (!words.length) return showErr('Добавь хотя бы одно слово');
+
+        const { enId, ruId } = getVoiceIds();
+
+        $('genBtn').disabled = true;
+        $('genBtn').innerHTML = '<span class="spin"></span>Генерация...';
+        $('progCard').classList.add('on');
+        $('dlCard').classList.remove('on');
+        $('dlList').innerHTML = '';
+        $('cacheInfo').classList.remove('on');
+
+        // Reset progress
+        ['1','2'].forEach(n => {
+            $('ico'+n).textContent = '🔄';
+            $('sub'+n).textContent = 'загрузка аудио...';
+            $('bar'+n).style.width = '0%';
+        });
+
+        try {
+            const ctx = new AudioContext({ sampleRate: 44100 });
+
+            // ── Step 1: fetch all unique audio clips ──────────────
+            // We need: each EN word + each RU word
+            // Fetch them all with a concurrency limit of 3 to be polite to the API
+            const clips = {}; // key -> AudioBuffer
+            const tasks = [];
+
+            words.forEach(({ en, ru }) => {
+                tasks.push({ text: en, voiceId: enId, lang: 'en' });
+                tasks.push({ text: ru, voiceId: ruId, lang: 'ru' });
+            });
+
+            // Deduplicate
+            const seen = new Set();
+            const uniqueTasks = tasks.filter(t => {
+                const k = `${t.voiceId}::${t.text}`;
+                if (seen.has(k)) return false;
+                seen.add(k); return true;
+            });
+
+            const total = uniqueTasks.length;
+            let done = 0;
+
+            // Fetch with concurrency=3
+            const CONCURRENCY = 2;
+            async function runPool(tasks) {
+                let idx = 0;
+                async function worker() {
+                    while (idx < tasks.length) {
+                        const t = tasks[idx++];
+                        const k = `${t.voiceId}::${t.text}`;
+                        const pct = Math.round((done / total) * 100);
+                        $('bar1').style.width = pct + '%';
+                        $('bar2').style.width = pct + '%';
+                        $('sub1').textContent = `${done+1}/${total} — ${t.text}`;
+                        $('sub2').textContent = `${done+1}/${total} — ${t.text}`;
+
+                        const arr = await tts(t.text, t.voiceId, apiKey);
+                        clips[k] = await decodeAndTrim(ctx, arr);
+                        done++;
+                    }
+                }
+                await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+            }
+
+            await runPool(uniqueTasks);
+
+            const fromCache = audioCache.size - uniqueTasks.length;
+            if (fromCache > 0) {
+                $('cacheInfo').textContent = `♻ ${fromCache} клипов из кэша (не тратят квоту при повторной генерации)`;
+                $('cacheInfo').classList.add('on');
+            }
+
+            // ── Step 2: assemble two tracks ───────────────────────
+            $('sub1').textContent = 'сборка трека...';
+            $('sub2').textContent = 'сборка трека...';
+
+            const sil1 = mkSilence(ctx, p1);
+            const sil2 = mkSilence(ctx, p2);
+
+            function buildTrack(mode) {
+                const bufs = [];
+                words.forEach(({ en, ru }, i) => {
+                    const enBuf = clips[`${enId}::${en}`];
+                    const ruBuf = clips[`${ruId}::${ru}`];
+                    if (mode === 'ru-en') {
+                        bufs.push(ruBuf, sil1, enBuf);
+                    } else {
+                        bufs.push(enBuf, sil1, ruBuf);
+                    }
+                    if (i < words.length - 1) bufs.push(sil2);
+                });
+                return concatBufs(ctx, bufs);
+            }
+
+            const track1 = buildTrack('ru-en');
+            const track2 = buildTrack('en-ru');
+
+            $('ico1').textContent = '✅';
+            $('ico2').textContent = '✅';
+            $('bar1').style.width = '100%';
+            $('bar2').style.width = '100%';
+            $('sub1').textContent = 'готово';
+            $('sub2').textContent = 'готово';
+
+            // ── Step 3: create download links ─────────────────────
+            const tracks = [
+                { buf: track1, label: 'РУ → АНГ', fname: 'ru-en.wav', flag: '🇷🇺→🇬🇧' },
+                { buf: track2, label: 'АНГ → РУ', fname: 'en-ru.wav', flag: '🇬🇧→🇷🇺' },
+            ];
+
+            for (const t of tracks) {
+                const wav = toWav(t.buf);
+                const url = URL.createObjectURL(wav);
+                const dur = Math.round(t.buf.duration);
+                const mm = Math.floor(dur/60), ss = String(dur%60).padStart(2,'0');
+                const mb = (wav.size/1024/1024).toFixed(1);
+
+                const a = document.createElement('a');
+                a.href = url; a.download = t.fname; a.className = 'dl-link';
+                a.innerHTML = `
+        <div class="dl-ico">${t.flag}</div>
+        <div class="dl-info">
+          <div class="dl-name">${t.label}</div>
+          <div class="dl-meta">${words.length} слов · ${mm}:${ss} · ${mb} MB · WAV</div>
+        </div>
+        <div class="dl-cta">↓ Скачать</div>`;
+                $('dlList').appendChild(a);
+            }
+
+            $('dlCard').classList.add('on');
+            ctx.close();
+
+        } catch(e) {
+            showErr(e.message);
+            $('ico1').textContent = '❌';
+            $('ico2').textContent = '❌';
+        }
+
+        $('genBtn').disabled = false;
+        $('genBtn').innerHTML = '▶ Сгенерировать ещё раз';
+    }
+
+    function showErr(msg) {
+        $('err').textContent = '⚠ ' + msg;
+        $('err').classList.add('on');
+    }
+</script>
+</body>
+</html>

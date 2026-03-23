@@ -39,105 +39,44 @@
             pointer-events: none;
         }
 
-        .header {
-            text-align: center;
-            padding: 40px 20px 28px;
-        }
-
+        .header { text-align: center; padding: 40px 20px 28px; }
         .logo {
-            font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--green);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
+            font-size: 12px; font-family: 'JetBrains Mono', monospace;
+            color: var(--green); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px;
         }
-
-        h1 {
-            font-size: clamp(38px, 9vw, 60px);
-            font-weight: 900;
-            letter-spacing: -1px;
-            line-height: 1;
-            margin-bottom: 10px;
-        }
-
+        h1 { font-size: clamp(38px, 9vw, 60px); font-weight: 900; letter-spacing: -1px; line-height: 1; margin-bottom: 10px; }
         h1 em { color: var(--green); font-style: normal; }
         .subtitle { font-size: 16px; color: var(--muted); }
 
-        .wrap {
-            max-width: 640px;
-            margin: 0 auto;
-            padding: 0 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
+        .wrap { max-width: 640px; margin: 0 auto; padding: 0 16px; display: flex; flex-direction: column; gap: 14px; }
 
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-        }
-
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
         .card-title {
-            font-size: 11px;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--muted);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--muted);
+            letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px;
+            display: flex; align-items: center; gap: 8px;
         }
         .card-title::before {
-            content: '';
-            display: inline-block;
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--green);
+            content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--green);
         }
 
         /* ── Language summary cards ── */
-        .lang-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
+        .lang-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
         .lang-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            cursor: pointer;
-            transition: border-color .2s, box-shadow .2s;
-            user-select: none;
+            background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+            padding: 16px; cursor: pointer; transition: border-color .2s, box-shadow .2s; user-select: none;
         }
-        .lang-card:hover {
-            border-color: var(--green);
-            box-shadow: 0 0 0 1px rgba(63,185,80,0.15);
-        }
+        .lang-card:hover { border-color: var(--green); box-shadow: 0 0 0 1px rgba(63,185,80,0.15); }
 
-        .lc-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
+        .lc-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
         .lc-flag { font-size: 20px; line-height: 1; }
         .lc-title { font-size: 15px; font-weight: 700; flex: 1; }
         .lc-gear { font-size: 14px; color: var(--muted); }
 
         .lc-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            margin-bottom: 5px;
-            gap: 6px;
+            display: flex; justify-content: space-between; align-items: baseline;
+            font-family: 'JetBrains Mono', monospace; font-size: 11px; margin-bottom: 5px; gap: 6px;
         }
         .lc-label { color: var(--muted); flex-shrink: 0; }
         .lc-val { color: var(--text); text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -146,89 +85,53 @@
 
         /* ── Modal ── */
         .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.75);
-            z-index: 200;
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-            padding: 0;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200;
+            display: none; align-items: flex-end; justify-content: center;
         }
-        @media (min-width: 480px) {
-            .modal-overlay { align-items: center; padding: 16px; }
-        }
+        @media (min-width: 480px) { .modal-overlay { align-items: center; padding: 16px; } }
         .modal-overlay.open { display: flex; }
 
         .modal {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px 16px 0 0;
-            padding: 20px 20px 32px;
-            width: 100%;
-            max-width: 440px;
-            max-height: 92vh;
-            overflow-y: auto;
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px 16px 0 0; padding: 20px 20px 32px;
+            width: 100%; max-width: 440px; max-height: 92vh; overflow-y: auto;
         }
-        @media (min-width: 480px) {
-            .modal { border-radius: 16px; padding: 24px; }
-        }
+        @media (min-width: 480px) { .modal { border-radius: 16px; padding: 24px; } }
 
-        .modal-hd {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .modal-lang {
-            font-size: 20px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .modal-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .modal-lang { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
 
         .modal-section { margin-bottom: 20px; }
         .modal-section:last-child { margin-bottom: 0; }
-
         .section-label {
-            font-size: 11px;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--muted);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
+            font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--muted);
+            letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px;
         }
+
+        /* ── Provider tabs ── */
+        .provider-tabs { display: flex; gap: 6px; }
+        .ptab {
+            flex: 1; padding: 8px; background: var(--bg); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--muted); font-family: 'JetBrains Mono', monospace;
+            font-size: 12px; cursor: pointer; transition: all .2s; text-align: center;
+        }
+        .ptab:hover { border-color: var(--muted); color: var(--text); }
+        .ptab.active { border-color: var(--green); color: var(--green); background: rgba(63,185,80,0.08); }
 
         /* ── Inputs ── */
         .key-row { display: flex; gap: 8px; }
         .input {
-            flex: 1;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            padding: 10px 14px;
-            outline: none;
-            transition: border-color .2s;
-            width: 100%;
+            flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 13px;
+            padding: 10px 14px; outline: none; transition: border-color .2s; width: 100%;
         }
         .input:focus { border-color: var(--green); }
         .input::placeholder { color: var(--muted); }
 
         .btn-icon {
-            background: var(--dim);
-            border: 1px solid var(--border);
-            color: var(--muted);
-            border-radius: 8px;
-            padding: 10px 13px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all .2s;
-            flex-shrink: 0;
-            line-height: 1;
+            background: var(--dim); border: 1px solid var(--border); color: var(--muted);
+            border-radius: 8px; padding: 10px 13px; cursor: pointer; font-size: 16px;
+            transition: all .2s; flex-shrink: 0; line-height: 1;
         }
         .btn-icon:hover { color: var(--text); border-color: var(--green); }
 
@@ -237,22 +140,10 @@
         .hint a:hover { text-decoration: underline; }
 
         /* ── Voice options ── */
-        .voice-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
+        .voice-list { display: flex; flex-direction: column; gap: 6px; }
         .voice-opt {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 9px 12px;
-            cursor: pointer;
-            transition: all .2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            user-select: none;
+            border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px;
+            cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 8px; user-select: none;
         }
         .voice-opt:hover { border-color: var(--muted); }
         .voice-opt.sel { border-color: var(--green); background: rgba(63,185,80,0.08); }
@@ -261,64 +152,57 @@
         .vname { font-size: 14px; font-weight: 700; line-height: 1.2; }
         .vdesc { font-size: 11px; color: var(--muted); }
 
-        /* ── Model select ── */
+        /* ── Model select / fixed ── */
         .model-sel {
-            width: 100%;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            padding: 8px 28px 8px 10px;
-            outline: none;
-            cursor: pointer;
-            transition: border-color .2s;
+            width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 12px;
+            padding: 8px 28px 8px 10px; outline: none; cursor: pointer; transition: border-color .2s;
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238b949e'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
+            background-repeat: no-repeat; background-position: right 10px center;
         }
         .model-sel:focus { border-color: var(--green); }
         .model-sel option { background: var(--card); }
 
+        /* ── Groq limits ── */
+        .groq-refresh {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .btn-inline {
+            background: none;
+            border: none;
+            color: var(--blue);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 0;
+            text-decoration: underline;
+        }
+        .btn-inline:hover { color: var(--text); }
+        .btn-inline:disabled { color: var(--muted); cursor: default; text-decoration: none; }
+
+        .model-fixed {
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
+            padding: 8px 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+        }
+
         /* ── Pause slider ── */
         .pause-ctrl { display: flex; align-items: center; gap: 10px; }
-
         input[type=range] {
-            flex: 1;
-            -webkit-appearance: none;
-            height: 4px;
-            border-radius: 2px;
-            background: var(--dim);
-            outline: none;
-            cursor: pointer;
+            flex: 1; -webkit-appearance: none; height: 4px; border-radius: 2px;
+            background: var(--dim); outline: none; cursor: pointer;
         }
         input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px; height: 16px;
-            border-radius: 50%;
-            background: var(--green);
-            cursor: pointer;
-            box-shadow: 0 0 8px rgba(63,185,80,0.4);
+            -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+            background: var(--green); cursor: pointer; box-shadow: 0 0 8px rgba(63,185,80,0.4);
         }
-        .rval {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            color: var(--green);
-            min-width: 36px;
-            text-align: right;
-        }
+        .rval { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--green); min-width: 36px; text-align: right; }
 
         /* ── Quota ── */
-        .quota {
-            font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            margin-top: 10px;
-            padding: 7px 10px;
-            border-radius: 6px;
-            display: none;
-        }
+        .quota { font-size: 12px; font-family: 'JetBrains Mono', monospace; margin-top: 10px; padding: 7px 10px; border-radius: 6px; display: none; }
         .quota.on { display: flex; align-items: center; gap: 8px; }
         .quota-bar-wrap { flex: 1; height: 4px; background: var(--dim); border-radius: 2px; overflow: hidden; }
         .quota-bar { height: 100%; border-radius: 2px; transition: width .4s; }
@@ -326,61 +210,31 @@
 
         /* ── Words ── */
         textarea {
-            width: 100%;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            padding: 12px 14px;
-            outline: none;
-            resize: vertical;
-            min-height: 160px;
-            line-height: 1.75;
-            transition: border-color .2s;
+            width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 13px;
+            padding: 12px 14px; outline: none; resize: vertical; min-height: 160px;
+            line-height: 1.75; transition: border-color .2s;
         }
         textarea:focus { border-color: var(--green); }
         textarea::placeholder { color: var(--muted); }
-
         .words-meta { display: flex; justify-content: space-between; margin-top: 8px; }
         .fmt { font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
         .cnt { font-size: 12px; color: var(--green); font-family: 'JetBrains Mono', monospace; }
 
-        /* ── Generate button ── */
+        /* ── Generate ── */
         .btn-gen {
-            width: 100%;
-            padding: 18px;
-            background: var(--green);
-            color: #000;
-            border: none;
-            border-radius: 10px;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all .2s;
+            width: 100%; padding: 18px; background: var(--green); color: #000; border: none;
+            border-radius: 10px; font-family: 'Barlow Condensed', sans-serif; font-size: 20px;
+            font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all .2s;
         }
-        .btn-gen:hover:not(:disabled) {
-            background: #4ec860;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 24px rgba(63,185,80,0.25);
-        }
+        .btn-gen:hover:not(:disabled) { background: #4ec860; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(63,185,80,0.25); }
         .btn-gen:disabled { background: var(--dim); color: var(--muted); cursor: not-allowed; transform: none; }
 
         /* ── Progress ── */
         .prog-card { display: none; }
         .prog-card.on { display: block; }
         .prog-list { display: flex; flex-direction: column; gap: 10px; }
-        .prog-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-        }
+        .prog-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
         .prog-ico { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
         .prog-body { flex: 1; min-width: 0; }
         .prog-name { font-size: 14px; font-weight: 700; }
@@ -392,58 +246,23 @@
         .dl-card { display: none; }
         .dl-card.on { display: block; }
         .dl-list { display: flex; flex-direction: column; gap: 10px; }
-        .dl-link {
-            display: flex; align-items: flex-start; gap: 14px;
-            padding: 16px 18px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text);
-        }
+        .dl-link { display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text); }
         .dl-ico { font-size: 28px; padding-top: 2px; }
         .dl-info { flex: 1; min-width: 0; }
         .dl-name { font-size: 17px; font-weight: 700; }
         .dl-meta { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
-        .dl-info audio {
-            width: 100%; margin-top: 10px; height: 36px;
-            filter: invert(1) hue-rotate(90deg) brightness(0.85);
-            border-radius: 6px;
-        }
-        .dl-cta {
-            font-size: 13px; font-weight: 700; color: var(--green);
-            letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0;
-            text-decoration: none; padding-top: 4px;
-        }
+        .dl-info audio { width: 100%; margin-top: 10px; height: 36px; filter: invert(1) hue-rotate(90deg) brightness(0.85); border-radius: 6px; }
+        .dl-cta { font-size: 13px; font-weight: 700; color: var(--green); letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0; text-decoration: none; padding-top: 4px; }
         .dl-cta:hover { text-decoration: underline; }
 
-        /* ── Error ── */
+        /* ── Error / cache info ── */
         .err { display: none; padding: 14px 16px; background: rgba(248,81,73,.1); border: 1px solid rgba(248,81,73,.3); border-radius: 8px; color: var(--red); font-size: 14px; font-family: 'JetBrains Mono', monospace; line-height: 1.5; }
         .err.on { display: block; }
-
-        /* ── Cache info ── */
-        .cache-info {
-            font-size: 12px;
-            color: var(--muted);
-            font-family: 'JetBrains Mono', monospace;
-            padding: 8px 12px;
-            background: rgba(63,185,80,0.05);
-            border: 1px solid rgba(63,185,80,0.15);
-            border-radius: 6px;
-            margin-top: 10px;
-            display: none;
-        }
+        .cache-info { font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; padding: 8px 12px; background: rgba(63,185,80,0.05); border: 1px solid rgba(63,185,80,0.15); border-radius: 6px; margin-top: 10px; display: none; }
         .cache-info.on { display: block; }
 
         @keyframes spin { to { transform: rotate(360deg); } }
-        .spin {
-            display: inline-block; width: 15px; height: 15px;
-            border: 2px solid rgba(0,0,0,.2);
-            border-top-color: #000;
-            border-radius: 50%;
-            animation: spin .7s linear infinite;
-            vertical-align: middle;
-            margin-right: 7px;
-        }
+        .spin { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(0,0,0,.2); border-top-color: #000; border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 7px; }
     </style>
 </head>
 <body>
@@ -451,25 +270,26 @@
 <div class="header">
     <div class="logo">▶ RunVocab</div>
     <h1>Слова для <em>бега</em></h1>
-    <p class="subtitle">Оба языка — нейтив от ElevenLabs</p>
+    <p class="subtitle">Оба языка — нейтив от ElevenLabs / Groq</p>
 </div>
 
 <div class="wrap">
 
     <!-- LANGUAGE CARDS -->
     <div class="lang-cards">
-        <div class="lang-card" id="enCard" onclick="openModal('en')">
+        <div class="lang-card" onclick="openModal('en')">
             <div class="lc-header">
                 <span class="lc-flag">🇬🇧</span>
                 <span class="lc-title">English</span>
                 <span class="lc-gear">⚙</span>
             </div>
+            <div class="lc-row"><span class="lc-label">провайдер</span><span class="lc-val" id="enSumProvider">ElevenLabs</span></div>
             <div class="lc-row"><span class="lc-label">голос</span><span class="lc-val" id="enSumVoice">Liam</span></div>
             <div class="lc-row"><span class="lc-label">модель</span><span class="lc-val" id="enSumModel">Multilingual v2</span></div>
             <div class="lc-row"><span class="lc-label">пауза</span><span class="lc-val" id="enSumPause">1с</span></div>
             <div class="lc-row"><span class="lc-label">api key</span><span class="lc-val no" id="enSumKey">не задан</span></div>
         </div>
-        <div class="lang-card" id="ruCard" onclick="openModal('ru')">
+        <div class="lang-card" onclick="openModal('ru')">
             <div class="lc-header">
                 <span class="lc-flag">🇷🇺</span>
                 <span class="lc-title">Русский</span>
@@ -531,7 +351,7 @@
 
 </div>
 
-<!-- ── EN MODAL ── -->
+<!-- ════════════ EN MODAL ════════════ -->
 <div class="modal-overlay" id="enModal">
   <div class="modal">
     <div class="modal-hd">
@@ -539,52 +359,113 @@
         <button class="btn-icon" onclick="closeModal('en')">✕</button>
     </div>
 
+    <!-- Provider tabs -->
     <div class="modal-section">
-        <div class="section-label">API Key</div>
-        <div class="key-row">
-            <input class="input" type="password" id="enApiKey" placeholder="sk_xxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off">
-            <button class="btn-icon" id="enEyeBtn">👁</button>
-        </div>
-        <div class="hint">
-            <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">elevenlabs.io → API Keys</a> → Create Key
-        </div>
-        <div class="quota" id="enQuota">
-            <div class="quota-bar-wrap"><div class="quota-bar" id="enQuotaBar"></div></div>
-            <span class="quota-text" id="enQuotaText"></span>
+        <div class="section-label">Провайдер</div>
+        <div class="provider-tabs" id="enProviderTabs">
+            <button class="ptab active" data-p="elevenlabs" onclick="setEnProvider('elevenlabs')">ElevenLabs</button>
+            <button class="ptab" data-p="groq" onclick="setEnProvider('groq')">Groq</button>
         </div>
     </div>
 
-    <div class="modal-section">
-        <div class="section-label">Голос</div>
-        <div class="voice-list" id="enVoices">
-            <label class="voice-opt sel">
-                <input type="radio" name="enVoice" value="TX3LPaxmHKxFdv7VOQHJ" checked>
-                <span class="vflag">🇺🇸</span>
-                <div><div class="vname">Liam</div><div class="vdesc">муж · американский</div></div>
-            </label>
-            <label class="voice-opt">
-                <input type="radio" name="enVoice" value="nPczCjzI2devNBz1zQrb">
-                <span class="vflag">🇺🇸</span>
-                <div><div class="vname">Brian</div><div class="vdesc">муж · американский</div></div>
-            </label>
-            <label class="voice-opt">
-                <input type="radio" name="enVoice" value="EXAVITQu4vr4xnSDxMaL">
-                <span class="vflag">🇬🇧</span>
-                <div><div class="vname">Sarah</div><div class="vdesc">жен · британский</div></div>
-            </label>
+    <!-- ─ ElevenLabs settings ─ -->
+    <div id="enElSettings">
+        <div class="modal-section">
+            <div class="section-label">API Key</div>
+            <div class="key-row">
+                <input class="input" type="password" id="enApiKey" placeholder="sk_xxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+                <button class="btn-icon" id="enEyeBtn">👁</button>
+            </div>
+            <div class="hint">
+                <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">elevenlabs.io → API Keys</a> → Create Key
+            </div>
+            <div class="quota" id="enQuota">
+                <div class="quota-bar-wrap"><div class="quota-bar" id="enQuotaBar"></div></div>
+                <span class="quota-text" id="enQuotaText"></span>
+            </div>
+        </div>
+        <div class="modal-section">
+            <div class="section-label">Голос</div>
+            <div class="voice-list" id="enVoices">
+                <label class="voice-opt sel">
+                    <input type="radio" name="enVoice" value="TX3LPaxmHKxFdv7VOQHJ" checked>
+                    <span class="vflag">🇺🇸</span>
+                    <div><div class="vname">Liam</div><div class="vdesc">муж · американский</div></div>
+                </label>
+                <label class="voice-opt">
+                    <input type="radio" name="enVoice" value="nPczCjzI2devNBz1zQrb">
+                    <span class="vflag">🇺🇸</span>
+                    <div><div class="vname">Brian</div><div class="vdesc">муж · американский</div></div>
+                </label>
+                <label class="voice-opt">
+                    <input type="radio" name="enVoice" value="EXAVITQu4vr4xnSDxMaL">
+                    <span class="vflag">🇬🇧</span>
+                    <div><div class="vname">Sarah</div><div class="vdesc">жен · британский</div></div>
+                </label>
+            </div>
+        </div>
+        <div class="modal-section">
+            <div class="section-label">Модель</div>
+            <select class="model-sel" id="enModel">
+                <option value="eleven_multilingual_v2">Multilingual v2</option>
+                <option value="eleven_v3">v3 — Макс. качество</option>
+                <option value="eleven_flash_v2_5">Flash v2.5 — Быстрый</option>
+                <option value="eleven_flash_v2">Flash v2 — Ультра-быстрый</option>
+            </select>
         </div>
     </div>
 
-    <div class="modal-section">
-        <div class="section-label">Модель</div>
-        <select class="model-sel" id="enModel">
-            <option value="eleven_multilingual_v2">Multilingual v2</option>
-            <option value="eleven_v3">v3 — Макс. качество</option>
-            <option value="eleven_flash_v2_5">Flash v2.5 — Быстрый</option>
-            <option value="eleven_flash_v2">Flash v2 — Ультра-быстрый</option>
-        </select>
+    <!-- ─ Groq settings ─ -->
+    <div id="enGroqSettings" style="display:none">
+        <div class="modal-section">
+            <div class="section-label">API Key</div>
+            <div class="key-row">
+                <input class="input" type="password" id="groqApiKey" placeholder="gsk_xxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+                <button class="btn-icon" id="groqEyeBtn">👁</button>
+            </div>
+            <div class="hint">
+                <a href="https://console.groq.com/keys" target="_blank">console.groq.com → API Keys</a> → Create API Key
+            </div>
+            <div class="quota" id="groqLimitsEl">
+                <div class="quota-bar-wrap"><div class="quota-bar" id="groqLimitsBar"></div></div>
+                <span class="quota-text" id="groqLimitsText"></span>
+            </div>
+            <div class="groq-refresh" id="groqRefreshHint" style="display:none">
+                <span id="groqRefreshMsg"></span> · <button class="btn-inline" id="groqRefreshBtn">обновить</button>
+            </div>
+        </div>
+        <div class="modal-section">
+            <div class="section-label">Голос</div>
+            <div class="voice-list" id="groqVoices">
+                <label class="voice-opt">
+                    <input type="radio" name="groqVoice" value="autumn">
+                    <span class="vflag">🎙</span>
+                    <div><div class="vname">Autumn</div><div class="vdesc">жен</div></div>
+                </label>
+                <label class="voice-opt sel">
+                    <input type="radio" name="groqVoice" value="hannah" checked>
+                    <span class="vflag">🎙</span>
+                    <div><div class="vname">Hannah</div><div class="vdesc">жен</div></div>
+                </label>
+                <label class="voice-opt">
+                    <input type="radio" name="groqVoice" value="austin">
+                    <span class="vflag">🎙</span>
+                    <div><div class="vname">Austin</div><div class="vdesc">муж</div></div>
+                </label>
+                <label class="voice-opt">
+                    <input type="radio" name="groqVoice" value="daniel">
+                    <span class="vflag">🎙</span>
+                    <div><div class="vname">Daniel</div><div class="vdesc">муж</div></div>
+                </label>
+            </div>
+        </div>
+        <div class="modal-section">
+            <div class="section-label">Модель</div>
+            <div class="model-fixed">canopylabs/orpheus-v1-english</div>
+        </div>
     </div>
 
+    <!-- Pause (provider-independent) -->
     <div class="modal-section">
         <div class="section-label">Пауза между словом и переводом</div>
         <div class="pause-ctrl">
@@ -595,7 +476,7 @@
   </div>
 </div>
 
-<!-- ── RU MODAL ── -->
+<!-- ════════════ RU MODAL ════════════ -->
 <div class="modal-overlay" id="ruModal">
   <div class="modal">
     <div class="modal-hd">
@@ -663,149 +544,263 @@
     const $ = id => document.getElementById(id);
 
     // ── Cookies ───────────────────────────────────────────────
-    const getCookie = name => decodeURIComponent((document.cookie.split(';').map(c => c.trim())
-        .find(c => c.startsWith(name + '=')) || '').slice(name.length + 1));
+    const getCookie = name => decodeURIComponent(
+        (document.cookie.split(';').map(c => c.trim())
+            .find(c => c.startsWith(name + '=')) || '').slice(name.length + 1)
+    );
     const setCookie = (name, val, days) => {
         const exp = new Date(Date.now() + days * 864e5).toUTCString();
         document.cookie = `${name}=${encodeURIComponent(val)};expires=${exp};path=/;SameSite=Strict;Secure`;
     };
 
-    const isValidKey = key => /^sk_[a-f0-9]{40,}$/i.test(key);
+    const isValidElKey   = k => /^sk_[a-f0-9]{40,}$/i.test(k);
+    const isValidGroqKey = k => /^gsk_[a-zA-Z0-9]{20,}$/.test(k);
+
+    // ── Groq limits ───────────────────────────────────────────
+    let groqLastLimits = null; // { remaining, limit, resetStr, checkedAt }
+
+    function captureGroqLimits(headers) {
+        console.log(Object.fromEntries(headers.entries()));
+        const remaining = parseInt(headers.get('x-ratelimit-remaining-requests') ?? '-1');
+        const limit     = parseInt(headers.get('x-ratelimit-limit-requests')     ?? '-1');
+        const resetStr  = headers.get('x-ratelimit-reset-requests') || '?';
+        if (remaining < 0 && limit < 0) return; // headers absent
+        groqLastLimits = { remaining, limit, resetStr, checkedAt: Date.now() };
+        updateGroqLimitsUI();
+    }
+
+    function updateGroqLimitsUI() {
+        if (!groqLastLimits) {
+            $('groqLimitsEl').classList.remove('on');
+            const hasKey = isValidGroqKey($('groqApiKey').value.trim());
+            $('groqRefreshHint').style.display = hasKey ? '' : 'none';
+            if (hasKey) {
+                $('groqRefreshMsg').textContent = 'Лимиты не проверены';
+                $('groqRefreshBtn').disabled = false;
+                $('groqRefreshBtn').textContent = 'проверить';
+            }
+            return;
+        }
+        const { remaining, limit, resetStr, checkedAt } = groqLastLimits;
+        const pct   = limit > 0 ? Math.round(remaining / limit * 100) : 0;
+        const color = remaining === 0 ? 'var(--red)' : pct < 20 ? '#e3b341' : 'var(--green)';
+        $('groqLimitsBar').style.width      = pct + '%';
+        $('groqLimitsBar').style.background = color;
+        $('groqLimitsText').style.color     = color;
+        $('groqLimitsText').textContent     = `${remaining}/${limit} запросов/мин · сброс ${resetStr}`;
+        $('groqLimitsEl').classList.add('on');
+
+        const stale = Date.now() - checkedAt > 60_000;
+        $('groqRefreshHint').style.display = stale ? '' : 'none';
+        if (stale) {
+            $('groqRefreshMsg').textContent = 'Данные устарели';
+            $('groqRefreshBtn').disabled = false;
+            $('groqRefreshBtn').textContent = 'обновить';
+        }
+    }
+
+    async function refreshGroqLimits() {
+        const key = $('groqApiKey').value.trim();
+        if (!isValidGroqKey(key)) return;
+        $('groqRefreshBtn').disabled = true;
+        $('groqRefreshBtn').textContent = '...';
+        try {
+            const res = await fetch('https://api.groq.com/openai/v1/audio/speech', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    model: 'canopylabs/orpheus-v1-english',
+                    voice: 'hannah', input: 'test', response_format: 'wav'
+                })
+            });
+            captureGroqLimits(res.headers);
+        } catch(_) {
+            $('groqRefreshBtn').disabled = false;
+            $('groqRefreshBtn').textContent = 'обновить';
+        }
+    }
 
     // ── Model display names ───────────────────────────────────
     const MODEL_SHORT = {
-        'eleven_multilingual_v2': 'Multilingual v2',
-        'eleven_v3': 'v3',
-        'eleven_flash_v2_5': 'Flash v2.5',
-        'eleven_flash_v2': 'Flash v2',
+        'eleven_multilingual_v2':          'Multilingual v2',
+        'eleven_v3':                       'v3',
+        'eleven_flash_v2_5':               'Flash v2.5',
+        'eleven_flash_v2':                 'Flash v2',
+        'canopylabs/orpheus-v1-english':   'Orpheus v1',
     };
+
+    // ── Provider helpers ──────────────────────────────────────
+    function getEnProvider() {
+        const active = document.querySelector('#enProviderTabs .ptab.active');
+        return active ? active.dataset.p : 'elevenlabs';
+    }
+
+    function setEnProvider(p) {
+        $('enElSettings').style.display   = p === 'elevenlabs' ? '' : 'none';
+        $('enGroqSettings').style.display = p === 'groq'       ? '' : 'none';
+        document.querySelectorAll('#enProviderTabs .ptab').forEach(t =>
+            t.classList.toggle('active', t.dataset.p === p)
+        );
+        saveSettings();
+    }
 
     // ── Summary cards ─────────────────────────────────────────
     function updateSummary() {
-        // EN
-        const enChecked = document.querySelector('input[name=enVoice]:checked');
-        const enVoiceName = enChecked ? enChecked.closest('.voice-opt').querySelector('.vname').textContent : '—';
-        $('enSumVoice').textContent = enVoiceName;
-        $('enSumModel').textContent = MODEL_SHORT[$('enModel').value] || $('enModel').value;
-        $('enSumPause').textContent = $('p1').value + 'с';
-        const enKey = $('enApiKey').value.trim();
-        const enOk = isValidKey(enKey);
-        $('enSumKey').textContent = enOk ? '✓ задан' : 'не задан';
-        $('enSumKey').className = 'lc-val ' + (enOk ? 'ok' : 'no');
+        const prov = getEnProvider();
+        $('enSumProvider').textContent = prov === 'groq' ? 'Groq' : 'ElevenLabs';
 
-        // RU
-        const ruChecked = document.querySelector('input[name=ruVoice]:checked');
-        const ruVoiceName = ruChecked ? ruChecked.closest('.voice-opt').querySelector('.vname').textContent : '—';
-        $('ruSumVoice').textContent = ruVoiceName;
+        if (prov === 'groq') {
+            const gChecked = document.querySelector('input[name=groqVoice]:checked');
+            $('enSumVoice').textContent = gChecked
+                ? gChecked.closest('.voice-opt').querySelector('.vname').textContent : '—';
+            $('enSumModel').textContent = 'Orpheus v1';
+            const gKey = $('groqApiKey').value.trim();
+            const gOk  = isValidGroqKey(gKey);
+            $('enSumKey').textContent  = gOk ? '✓ задан' : 'не задан';
+            $('enSumKey').className    = 'lc-val ' + (gOk ? 'ok' : 'no');
+        } else {
+            const eChecked = document.querySelector('input[name=enVoice]:checked');
+            $('enSumVoice').textContent = eChecked
+                ? eChecked.closest('.voice-opt').querySelector('.vname').textContent : '—';
+            $('enSumModel').textContent = MODEL_SHORT[$('enModel').value] || $('enModel').value;
+            const eKey = $('enApiKey').value.trim();
+            const eOk  = isValidElKey(eKey);
+            $('enSumKey').textContent  = eOk ? '✓ задан' : 'не задан';
+            $('enSumKey').className    = 'lc-val ' + (eOk ? 'ok' : 'no');
+        }
+        $('enSumPause').textContent = $('p1').value + 'с';
+
+        // RU (always ElevenLabs)
+        const rChecked = document.querySelector('input[name=ruVoice]:checked');
+        $('ruSumVoice').textContent = rChecked
+            ? rChecked.closest('.voice-opt').querySelector('.vname').textContent : '—';
         $('ruSumModel').textContent = MODEL_SHORT[$('ruModel').value] || $('ruModel').value;
         $('ruSumPause').textContent = $('p2').value + 'с';
-        const ruKey = $('ruApiKey').value.trim();
-        const ruOk = isValidKey(ruKey);
-        $('ruSumKey').textContent = ruOk ? '✓ задан' : 'не задан';
-        $('ruSumKey').className = 'lc-val ' + (ruOk ? 'ok' : 'no');
+        const rKey = $('ruApiKey').value.trim();
+        const rOk  = isValidElKey(rKey);
+        $('ruSumKey').textContent = rOk ? '✓ задан' : 'не задан';
+        $('ruSumKey').className   = 'lc-val ' + (rOk ? 'ok' : 'no');
     }
 
-    // ── Settings save / restore ───────────────────────────────
+    // ── Settings save ─────────────────────────────────────────
     function saveSettings() {
-        setCookie('rv_en_api_key', $('enApiKey').value.trim(), 365);
-        setCookie('rv_ru_api_key', $('ruApiKey').value.trim(), 365);
-        const enV = document.querySelector('input[name=enVoice]:checked');
-        const ruV = document.querySelector('input[name=ruVoice]:checked');
-        if (enV) setCookie('rv_en_voice', enV.value, 365);
-        if (ruV) setCookie('rv_ru_voice', ruV.value, 365);
-        setCookie('rv_en_model', $('enModel').value, 365);
-        setCookie('rv_ru_model', $('ruModel').value, 365);
+        setCookie('rv_en_provider',   getEnProvider(), 365);
+        setCookie('rv_el_en_api_key', $('enApiKey').value.trim(),   365);
+        setCookie('rv_groq_api_key',  $('groqApiKey').value.trim(), 365);
+        setCookie('rv_el_ru_api_key', $('ruApiKey').value.trim(),   365);
+
+        const elEnV  = document.querySelector('input[name=enVoice]:checked');
+        const groqV  = document.querySelector('input[name=groqVoice]:checked');
+        const ruV    = document.querySelector('input[name=ruVoice]:checked');
+        if (elEnV)  setCookie('rv_el_en_voice',  elEnV.value,  365);
+        if (groqV)  setCookie('rv_groq_voice',   groqV.value,  365);
+        if (ruV)    setCookie('rv_el_ru_voice',  ruV.value,    365);
+
+        setCookie('rv_el_en_model', $('enModel').value, 365);
+        setCookie('rv_el_ru_model', $('ruModel').value, 365);
         setCookie('rv_p1', $('p1').value, 365);
         setCookie('rv_p2', $('p2').value, 365);
         updateSummary();
     }
 
+    // ── Settings restore ──────────────────────────────────────
     function restoreSettings() {
-        const enKey = getCookie('rv_en_api_key');
-        const ruKey = getCookie('rv_ru_api_key');
-        if (enKey) $('enApiKey').value = enKey;
-        if (ruKey) $('ruApiKey').value = ruKey;
+        // API keys
+        const elEnKey  = getCookie('rv_el_en_api_key');
+        const groqKey  = getCookie('rv_groq_api_key');
+        const elRuKey  = getCookie('rv_el_ru_api_key');
+        if (elEnKey)  $('enApiKey').value  = elEnKey;
+        if (groqKey)  $('groqApiKey').value = groqKey;
+        if (elRuKey)  $('ruApiKey').value  = elRuKey;
 
-        const enVoice = getCookie('rv_en_voice');
-        const ruVoice = getCookie('rv_ru_voice');
-        if (enVoice) {
-            const r = document.querySelector(`input[name=enVoice][value="${enVoice}"]`);
-            if (r) {
-                r.checked = true;
-                document.querySelectorAll('#enVoices .voice-opt').forEach(v => v.classList.remove('sel'));
-                r.closest('.voice-opt').classList.add('sel');
-            }
-        }
-        if (ruVoice) {
-            const r = document.querySelector(`input[name=ruVoice][value="${ruVoice}"]`);
-            if (r) {
-                r.checked = true;
-                document.querySelectorAll('#ruVoices .voice-opt').forEach(v => v.classList.remove('sel'));
-                r.closest('.voice-opt').classList.add('sel');
-            }
+        // ElevenLabs EN voice
+        const elEnVoice = getCookie('rv_el_en_voice');
+        if (elEnVoice) {
+            const r = document.querySelector(`input[name=enVoice][value="${elEnVoice}"]`);
+            if (r) { r.checked = true; syncSel('enVoices', r); }
         }
 
-        const enModel = getCookie('rv_en_model');
-        const ruModel = getCookie('rv_ru_model');
+        // Groq voice
+        const groqVoice = getCookie('rv_groq_voice');
+        if (groqVoice) {
+            const r = document.querySelector(`input[name=groqVoice][value="${groqVoice}"]`);
+            if (r) { r.checked = true; syncSel('groqVoices', r); }
+        }
+
+        // RU voice
+        const elRuVoice = getCookie('rv_el_ru_voice');
+        if (elRuVoice) {
+            const r = document.querySelector(`input[name=ruVoice][value="${elRuVoice}"]`);
+            if (r) { r.checked = true; syncSel('ruVoices', r); }
+        }
+
+        // Models
+        const enModel = getCookie('rv_el_en_model');
+        const ruModel = getCookie('rv_el_ru_model');
         if (enModel) $('enModel').value = enModel;
         if (ruModel) $('ruModel').value = ruModel;
 
-        const p1 = getCookie('rv_p1');
-        const p2 = getCookie('rv_p2');
+        // Pauses
+        const p1 = getCookie('rv_p1'), p2 = getCookie('rv_p2');
         if (p1) $('p1').value = p1;
         if (p2) $('p2').value = p2;
-
         updateSliderDisplay('p1', 'p1v');
         updateSliderDisplay('p2', 'p2v');
-        updateSummary();
 
-        // Check quotas for saved keys
-        if (enKey && isValidKey(enKey)) checkQuota('en', enKey);
-        if (ruKey && isValidKey(ruKey)) checkQuota('ru', ruKey);
+        // Provider (apply last — triggers show/hide and updateSummary)
+        const prov = getCookie('rv_en_provider') || 'elevenlabs';
+        setEnProvider(prov); // also calls saveSettings → updateSummary
+
+        // Quota for saved ElevenLabs keys
+        if (elEnKey  && isValidElKey(elEnKey)  && prov === 'elevenlabs') checkQuota('en', elEnKey);
+        if (elRuKey  && isValidElKey(elRuKey))  checkQuota('ru', elRuKey);
+    }
+
+    function syncSel(listId, radio) {
+        document.querySelectorAll(`#${listId} .voice-opt`).forEach(v => v.classList.remove('sel'));
+        radio.closest('.voice-opt').classList.add('sel');
     }
 
     // ── Modal open / close ────────────────────────────────────
     function openModal(lang) {
         $(`${lang}Modal`).classList.add('open');
         document.body.style.overflow = 'hidden';
+        if (lang === 'en' && getEnProvider() === 'groq') updateGroqLimitsUI();
     }
     function closeModal(lang) {
         $(`${lang}Modal`).classList.remove('open');
         document.body.style.overflow = '';
         saveSettings();
     }
-
-    // Close on overlay click
-    ['en', 'ru'].forEach(lang => {
+    ['en','ru'].forEach(lang => {
         $(`${lang}Modal`).addEventListener('click', e => {
             if (e.target === $(`${lang}Modal`)) closeModal(lang);
         });
     });
-
-    // Close on Escape
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') ['en', 'ru'].forEach(lang => closeModal(lang));
+        if (e.key === 'Escape') ['en','ru'].forEach(closeModal);
     });
 
     // ── Eye toggles ───────────────────────────────────────────
-    ['en', 'ru'].forEach(lang => {
-        $(`${lang}EyeBtn`).onclick = () => {
-            const i = $(`${lang}ApiKey`);
-            i.type = i.type === 'password' ? 'text' : 'password';
-        };
+    [['enEyeBtn','enApiKey'], ['groqEyeBtn','groqApiKey'], ['ruEyeBtn','ruApiKey']].forEach(([btn, inp]) => {
+        $(btn).onclick = () => { const i = $(inp); i.type = i.type === 'password' ? 'text' : 'password'; };
     });
 
-    // ── API key change → quota check ──────────────────────────
-    ['en', 'ru'].forEach(lang => {
-        $(`${lang}ApiKey`).addEventListener('change', () => {
-            const key = $(`${lang}ApiKey`).value.trim();
-            saveSettings();
-            if (isValidKey(key)) checkQuota(lang, key);
-            else $(`${lang}Quota`).classList.remove('on');
-        });
+    // ── API key change → quota / summary ─────────────────────
+    $('enApiKey').addEventListener('change', () => {
+        const k = $('enApiKey').value.trim();
+        saveSettings();
+        if (isValidElKey(k)) checkQuota('en', k); else $('enQuota').classList.remove('on');
+    });
+    $('groqApiKey').addEventListener('change', () => { saveSettings(); updateGroqLimitsUI(); });
+    $('groqRefreshBtn').onclick = refreshGroqLimits;
+    $('ruApiKey').addEventListener('change', () => {
+        const k = $('ruApiKey').value.trim();
+        saveSettings();
+        if (isValidElKey(k)) checkQuota('ru', k); else $('ruQuota').classList.remove('on');
     });
 
-    // ── Quota check ───────────────────────────────────────────
+    // ── Quota (ElevenLabs only) ───────────────────────────────
     async function checkQuota(lang, apiKey) {
         try {
             const res = await fetch('https://api.elevenlabs.io/v1/user/subscription', {
@@ -815,26 +810,22 @@
             const data = await res.json();
             const used = data.character_count ?? 0;
             const limit = data.character_limit ?? 0;
-            const pct = limit ? Math.round(used / limit * 100) : 0;
-            const free = (limit - used).toLocaleString('ru');
+            const pct   = limit ? Math.round(used / limit * 100) : 0;
+            const free  = (limit - used).toLocaleString('ru');
             const color = pct > 80 ? 'var(--red)' : pct > 50 ? '#e3b341' : 'var(--green)';
-            $(`${lang}QuotaBar`).style.width = pct + '%';
+            $(`${lang}QuotaBar`).style.width      = pct + '%';
             $(`${lang}QuotaBar`).style.background = color;
-            $(`${lang}QuotaText`).style.color = color;
-            $(`${lang}QuotaText`).textContent = `${free} симв. осталось (${100 - pct}%)`;
+            $(`${lang}QuotaText`).style.color     = color;
+            $(`${lang}QuotaText`).textContent      = `${free} симв. осталось (${100 - pct}%)`;
             $(`${lang}Quota`).classList.add('on');
         } catch(_) { $(`${lang}Quota`).classList.remove('on'); }
     }
 
     // ── Voice option highlight + save ─────────────────────────
-    ['en', 'ru'].forEach(lang => {
-        const list = $(`${lang}Voices`);
+    ['enVoices','groqVoices','ruVoices'].forEach(listId => {
+        const list = $(listId);
         list.querySelectorAll('.voice-opt').forEach(el => {
-            el.addEventListener('click', () => {
-                list.querySelectorAll('.voice-opt').forEach(v => v.classList.remove('sel'));
-                el.classList.add('sel');
-                saveSettings();
-            });
+            el.addEventListener('click', () => { syncSel(listId, el.querySelector('input')); saveSettings(); });
         });
     });
 
@@ -843,40 +834,32 @@
 
     // ── Sliders ───────────────────────────────────────────────
     function updateSliderDisplay(id, vid) {
-        const v = parseFloat($(id).value);
-        $(vid).textContent = parseFloat(v.toFixed(2)) + 'с';
+        $(vid).textContent = parseFloat(parseFloat($(id).value).toFixed(2)) + 'с';
     }
-
-    [['p1','p1v'],['p2','p2v']].forEach(([id, vid]) => {
+    [['p1','p1v'],['p2','p2v']].forEach(([id,vid]) => {
         $(id).oninput = () => { updateSliderDisplay(id, vid); saveSettings(); };
         updateSliderDisplay(id, vid);
     });
 
-    // ── Restore on load ───────────────────────────────────────
+    // ── Init ──────────────────────────────────────────────────
     restoreSettings();
 
     // ── Word parser ───────────────────────────────────────────
     function parseWords(text) {
-        const result = Papa.parse(text.trim(), { skipEmptyLines: true });
-        return result.data
+        return Papa.parse(text.trim(), { skipEmptyLines: true }).data
             .map(cols => {
-                const en = (cols[0] || '').trim();
-                const ru = (cols[1] || '').trim();
-                if (!en && !ru) return null;
-                return { en, ru };
+                const en = (cols[0]||'').trim(), ru = (cols[1]||'').trim();
+                return (en||ru) ? { en, ru } : null;
             }).filter(Boolean);
     }
-
     $('wordsInput').oninput = () => {
         const n = parseWords($('wordsInput').value).length;
         $('wCount').textContent = n ? `${n} слов` : '';
     };
 
     // ── IndexedDB audio cache ─────────────────────────────────
-    const IDB_NAME = 'rv_audio_cache';
-    const IDB_STORE = 'clips';
+    const IDB_NAME = 'rv_audio_cache', IDB_STORE = 'clips';
     let idb = null;
-
     (function openDB() {
         const req = indexedDB.open(IDB_NAME, 2);
         req.onupgradeneeded = e => {
@@ -890,115 +873,110 @@
     function idbGet(key) {
         return new Promise(resolve => {
             if (!idb) return resolve(null);
-            const req = idb.transaction(IDB_STORE, 'readonly').objectStore(IDB_STORE).get(key);
+            const req = idb.transaction(IDB_STORE,'readonly').objectStore(IDB_STORE).get(key);
             req.onsuccess = () => resolve(req.result ?? null);
-            req.onerror = () => resolve(null);
+            req.onerror   = () => resolve(null);
         });
     }
-
     function idbPut(key, buf) {
         if (!idb) return;
-        try {
-            idb.transaction(IDB_STORE, 'readwrite').objectStore(IDB_STORE).put(buf, key);
-        } catch(_) {}
+        try { idb.transaction(IDB_STORE,'readwrite').objectStore(IDB_STORE).put(buf, key); } catch(_) {}
     }
 
-    // ── ElevenLabs TTS ────────────────────────────────────────
+    // ── Audio fetch (ElevenLabs + Groq) ──────────────────────
     const audioCache = new Map();
     let cacheHits = 0;
 
-    async function tts(text, voiceId, apiKey, modelId = 'eleven_multilingual_v2') {
-        const key = `${voiceId}::${modelId}::${text}`;
+    async function fetchAudio({ text, voiceId, modelId, apiKey, provider, cacheKey }) {
+        if (audioCache.has(cacheKey)) { cacheHits++; return audioCache.get(cacheKey).slice(0); }
+        const persisted = await idbGet(cacheKey);
+        if (persisted) { audioCache.set(cacheKey, persisted); cacheHits++; return persisted.slice(0); }
 
-        if (audioCache.has(key)) { cacheHits++; return audioCache.get(key).slice(0); }
-
-        const persisted = await idbGet(key);
-        if (persisted) {
-            audioCache.set(key, persisted);
-            cacheHits++;
-            return persisted.slice(0);
-        }
-
-        const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
-            method: 'POST',
-            headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                text,
-                model_id: modelId,
-                voice_settings: { stability: 0.45, similarity_boost: 0.80, style: 0.0, use_speaker_boost: true }
-            })
-        });
-
-        if (!res.ok) {
-            let msg = `ElevenLabs ошибка ${res.status}`;
-            try {
-                const e = await res.json();
-                msg = e?.detail?.message || e?.detail || msg;
-            } catch(_) {}
-            throw new Error(msg);
+        let res;
+        if (provider === 'groq') {
+            res = await fetch('https://api.groq.com/openai/v1/audio/speech', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ model: modelId, voice: voiceId, input: text, response_format: 'wav' })
+            });
+            if (!res.ok) {
+                let msg = `Groq ошибка ${res.status}`;
+                try { const e = await res.json(); msg = e?.error?.message || msg; } catch(_) {}
+                throw new Error(msg);
+            }
+            captureGroqLimits(res.headers);
+        } else {
+            res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+                method: 'POST',
+                headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    text, model_id: modelId,
+                    voice_settings: { stability: 0.45, similarity_boost: 0.80, style: 0.0, use_speaker_boost: true }
+                })
+            });
+            if (!res.ok) {
+                let msg = `ElevenLabs ошибка ${res.status}`;
+                try { const e = await res.json(); msg = e?.detail?.message || e?.detail || msg; } catch(_) {}
+                throw new Error(msg);
+            }
         }
 
         const buf = await res.arrayBuffer();
-        audioCache.set(key, buf.slice(0));
-        idbPut(key, buf.slice(0));
+        audioCache.set(cacheKey, buf.slice(0));
+        idbPut(cacheKey, buf.slice(0));
         return buf;
     }
 
-    // ── Get selected voice IDs and models ─────────────────────
+    // ── Get config ────────────────────────────────────────────
     function getConfig() {
-        const enId = document.querySelector('input[name=enVoice]:checked').value;
+        const enProvider = getEnProvider();
+
+        let enId, enModel, enKey;
+        if (enProvider === 'groq') {
+            enId    = (document.querySelector('input[name=groqVoice]:checked') || {}).value || 'autumn';
+            enModel = 'canopylabs/orpheus-v1-english';
+            enKey   = $('groqApiKey').value.trim();
+        } else {
+            enId    = document.querySelector('input[name=enVoice]:checked').value;
+            enModel = $('enModel').value;
+            enKey   = $('enApiKey').value.trim();
+        }
+
         const ruRadio = document.querySelector('input[name=ruVoice]:checked');
-        const ruId = ruRadio.getAttribute('data-id');
-        const enModel = $('enModel').value;
+        const ruId    = ruRadio.getAttribute('data-id');
         const ruModel = $('ruModel').value;
-        const enApiKey = $('enApiKey').value.trim();
-        const ruApiKey = $('ruApiKey').value.trim();
-        // Allow one key for both
-        const enKey = enApiKey || ruApiKey;
-        const ruKey = ruApiKey || enApiKey;
-        return { enId, ruId, enModel, ruModel, enKey, ruKey };
+        const ruKey   = $('ruApiKey').value.trim() || (enProvider === 'elevenlabs' ? enKey : '');
+
+        return { enProvider, enId, enModel, enKey, ruId, ruModel, ruKey };
     }
 
-    // ── Trim + decode helper ──────────────────────────────────
+    // ── Audio helpers ─────────────────────────────────────────
     async function decodeAndTrim(ctx, arrayBuffer, threshold = 0.01, padSec = 0.05) {
         const full = await ctx.decodeAudioData(arrayBuffer.slice(0));
-        const sr = full.sampleRate;
-        const ch = full.numberOfChannels;
-        const data = full.getChannelData(0);
-        const pad = Math.ceil(padSec * sr);
-
+        const sr = full.sampleRate, ch = full.numberOfChannels;
+        const data = full.getChannelData(0), pad = Math.ceil(padSec * sr);
         let start = 0;
-        for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++)
             if (Math.abs(data[i]) > threshold) { start = Math.max(0, i - pad); break; }
-        }
-
         let end = data.length;
-        for (let i = data.length - 1; i >= 0; i--) {
+        for (let i = data.length - 1; i >= 0; i--)
             if (Math.abs(data[i]) > threshold) { end = Math.min(data.length, i + pad + 1); break; }
-        }
-
         if (end <= start) return full;
-
         const out = ctx.createBuffer(ch, end - start, sr);
-        for (let c = 0; c < ch; c++) {
+        for (let c = 0; c < ch; c++)
             out.getChannelData(c).set(full.getChannelData(c).subarray(start, end));
-        }
         return out;
     }
 
-    // ── Silence buffer ────────────────────────────────────────
     function mkSilence(ctx, sec) {
-        const n = Math.ceil(ctx.sampleRate * Math.max(0.05, sec));
-        return ctx.createBuffer(1, n, ctx.sampleRate);
+        return ctx.createBuffer(1, Math.ceil(ctx.sampleRate * Math.max(0.05, sec)), ctx.sampleRate);
     }
 
-    // ── Concat AudioBuffers ───────────────────────────────────
     function concatBufs(ctx, bufs) {
         const valid = bufs.filter(Boolean);
         if (!valid.length) return ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
         const ch = Math.max(...valid.map(b => b.numberOfChannels));
-        const total = valid.reduce((s, b) => s + b.length, 0);
-        const out = ctx.createBuffer(ch, total, ctx.sampleRate);
+        const out = ctx.createBuffer(ch, valid.reduce((s,b) => s + b.length, 0), ctx.sampleRate);
         let off = 0;
         for (const b of valid) {
             for (let c = 0; c < ch; c++) {
@@ -1010,29 +988,16 @@
         return out;
     }
 
-    // ── AudioBuffer → MP3 Blob ────────────────────────────────
     function toMp3(buf, bitrate = 128) {
         const ch = buf.numberOfChannels, sr = buf.sampleRate;
         const encoder = new lamejs.Mp3Encoder(ch, sr, bitrate);
-        const blockSize = 1152;
         const mp3Data = [];
-
-        function f32ToI16(f32) {
-            const i16 = new Int16Array(f32.length);
-            for (let i = 0; i < f32.length; i++) {
-                const s = Math.max(-1, Math.min(1, f32[i]));
-                i16[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
-            }
-            return i16;
-        }
-
-        const left = f32ToI16(buf.getChannelData(0));
-        const right = ch > 1 ? f32ToI16(buf.getChannelData(1)) : null;
-
-        for (let i = 0; i < buf.length; i += blockSize) {
-            const l = left.subarray(i, i + blockSize);
-            const chunk = right ? encoder.encodeBuffer(l, right.subarray(i, i + blockSize))
-                                : encoder.encodeBuffer(l);
+        const f32i16 = f => { const a = new Int16Array(f.length); for (let i=0;i<f.length;i++) { const s=Math.max(-1,Math.min(1,f[i])); a[i]=s<0?s*0x8000:s*0x7FFF; } return a; };
+        const left = f32i16(buf.getChannelData(0));
+        const right = ch > 1 ? f32i16(buf.getChannelData(1)) : null;
+        for (let i = 0; i < buf.length; i += 1152) {
+            const l = left.subarray(i, i+1152);
+            const chunk = right ? encoder.encodeBuffer(l, right.subarray(i, i+1152)) : encoder.encodeBuffer(l);
             if (chunk.length) mp3Data.push(chunk);
         }
         const tail = encoder.flush();
@@ -1044,7 +1009,7 @@
     $('genBtn').onclick = generate;
 
     async function generate() {
-        const words = parseWords($('wordsInput').value);
+        const words    = parseWords($('wordsInput').value);
         const listName = $('listName').value.trim() || 'Word List';
         const p1 = parseFloat($('p1').value);
         const p2 = parseFloat($('p2').value);
@@ -1052,61 +1017,51 @@
         $('err').classList.remove('on');
         if (!words.length) return showErr('Добавь хотя бы одно слово');
 
-        const { enId, ruId, enModel, ruModel, enKey, ruKey } = getConfig();
-        if (!enKey) return showErr('Введи API ключ в настройках языка (⚙)');
-        cacheHits = 0;
+        const { enProvider, enId, enModel, enKey, ruId, ruModel, ruKey } = getConfig();
+        if (!enKey) return showErr('Введи API ключ в настройках 🇬🇧 English (⚙)');
+        if (!ruKey) return showErr('Введи API ключ в настройках 🇷🇺 Русский (⚙)');
 
+        cacheHits = 0;
         $('genBtn').disabled = true;
         $('genBtn').innerHTML = '<span class="spin"></span>Генерация...';
         $('progCard').classList.add('on');
         $('dlCard').classList.remove('on');
         $('dlList').innerHTML = '';
         $('cacheInfo').classList.remove('on');
-
-        ['1','2'].forEach(n => {
-            $('ico'+n).textContent = '🔄';
-            $('sub'+n).textContent = 'загрузка аудио...';
-            $('bar'+n).style.width = '0%';
-        });
+        ['1','2'].forEach(n => { $('ico'+n).textContent='🔄'; $('sub'+n).textContent='загрузка аудио...'; $('bar'+n).style.width='0%'; });
 
         try {
             const ctx = new AudioContext({ sampleRate: 44100 });
-            const clips = {};
-            const tasks = [];
+            const clips = {}, tasks = [];
+
+            const mkKey = (provider, voiceId, modelId, text) =>
+                provider === 'groq' ? `groq::${voiceId}::${modelId}::${text}` : `${voiceId}::${modelId}::${text}`;
 
             words.forEach(({ en, ru }) => {
-                if (en) tasks.push({ text: en, voiceId: enId, modelId: enModel, apiKey: enKey, lang: 'en' });
-                if (ru) tasks.push({ text: ru, voiceId: ruId, modelId: ruModel, apiKey: ruKey, lang: 'ru' });
+                if (en) tasks.push({ text: en, voiceId: enId, modelId: enModel, apiKey: enKey, provider: enProvider, cacheKey: mkKey(enProvider, enId, enModel, en), lang: 'en' });
+                if (ru) tasks.push({ text: ru, voiceId: ruId, modelId: ruModel, apiKey: ruKey, provider: 'elevenlabs', cacheKey: mkKey('elevenlabs', ruId, ruModel, ru), lang: 'ru' });
             });
 
             const seen = new Set();
-            const uniqueTasks = tasks.filter(t => {
-                const k = `${t.voiceId}::${t.modelId}::${t.text}`;
-                if (seen.has(k)) return false;
-                seen.add(k); return true;
-            });
+            const uniqueTasks = tasks.filter(t => { if (seen.has(t.cacheKey)) return false; seen.add(t.cacheKey); return true; });
 
             const total = uniqueTasks.length;
             let done = 0;
 
-            const CONCURRENCY = 2;
             async function runPool(pool) {
                 let idx = 0;
                 async function worker() {
                     while (idx < pool.length) {
                         const t = pool[idx++];
-                        const k = `${t.voiceId}::${t.modelId}::${t.text}`;
-                        const pct = Math.round((done / total) * 100);
-                        $('bar1').style.width = pct + '%';
-                        $('bar2').style.width = pct + '%';
-                        $('sub1').textContent = `${done+1}/${total} — ${t.text}`;
-                        $('sub2').textContent = `${done+1}/${total} — ${t.text}`;
-                        const arr = await tts(t.text, t.voiceId, t.apiKey, t.modelId);
-                        clips[k] = await decodeAndTrim(ctx, arr);
+                        const pct = Math.round(done / total * 100);
+                        $('bar1').style.width = $('bar2').style.width = pct + '%';
+                        $('sub1').textContent = $('sub2').textContent = `${done+1}/${total} — ${t.text}`;
+                        const arr = await fetchAudio(t);
+                        clips[t.cacheKey] = await decodeAndTrim(ctx, arr);
                         done++;
                     }
                 }
-                await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+                await Promise.all(Array.from({ length: 2 }, worker));
             }
 
             await runPool(uniqueTasks);
@@ -1116,17 +1071,15 @@
                 $('cacheInfo').classList.add('on');
             }
 
-            $('sub1').textContent = 'сборка трека...';
-            $('sub2').textContent = 'сборка трека...';
+            $('sub1').textContent = $('sub2').textContent = 'сборка трека...';
 
-            const sil1 = mkSilence(ctx, p1);
-            const sil2 = mkSilence(ctx, p2);
+            const sil1 = mkSilence(ctx, p1), sil2 = mkSilence(ctx, p2);
 
             function buildTrack(mode) {
                 const bufs = [];
                 words.forEach(({ en, ru }, i) => {
-                    const enBuf = en ? clips[`${enId}::${enModel}::${en}`] : null;
-                    const ruBuf = ru ? clips[`${ruId}::${ruModel}::${ru}`] : null;
+                    const enBuf = en ? clips[mkKey(enProvider, enId, enModel, en)] : null;
+                    const ruBuf = ru ? clips[mkKey('elevenlabs', ruId, ruModel, ru)] : null;
                     if (mode === 'ru-en') {
                         if (ruBuf) bufs.push(ruBuf);
                         if (enBuf) { if (ruBuf) bufs.push(sil1); bufs.push(enBuf); }
@@ -1142,12 +1095,7 @@
             const track1 = buildTrack('ru-en');
             const track2 = buildTrack('en-ru');
 
-            $('ico1').textContent = '✅';
-            $('ico2').textContent = '✅';
-            $('bar1').style.width = '100%';
-            $('bar2').style.width = '100%';
-            $('sub1').textContent = 'готово';
-            $('sub2').textContent = 'готово';
+            ['1','2'].forEach(n => { $('ico'+n).textContent='✅'; $('bar'+n).style.width='100%'; $('sub'+n).textContent='готово'; });
 
             const tracks = [
                 { buf: track1, label: 'РУ → АНГ', fname: `${listName} ru-en.mp3`, flag: '🇷🇺→🇬🇧' },
@@ -1159,15 +1107,12 @@
                 const url = URL.createObjectURL(mp3);
                 const dur = Math.round(t.buf.duration);
                 const mm = Math.floor(dur/60), ss = String(dur%60).padStart(2,'0');
-                const mb = (mp3.size/1024/1024).toFixed(1);
-
                 const div = document.createElement('div');
                 div.className = 'dl-link';
-                div.innerHTML = `
-        <div class="dl-ico">${t.flag}</div>
+                div.innerHTML = `<div class="dl-ico">${t.flag}</div>
         <div class="dl-info">
           <div class="dl-name">${t.label}</div>
-          <div class="dl-meta">${words.length} слов · ${mm}:${ss} · ${mb} MB · MP3</div>
+          <div class="dl-meta">${words.length} слов · ${mm}:${ss} · ${(mp3.size/1024/1024).toFixed(1)} MB · MP3</div>
           <audio controls src="${url}"></audio>
         </div>
         <a href="${url}" download="${t.fname}" class="dl-cta">↓ Скачать</a>`;
@@ -1177,24 +1122,20 @@
             $('dlCard').classList.add('on');
             ctx.close();
 
-            // Refresh quotas
-            if (enKey) checkQuota('en', enKey);
-            if (ruKey && ruKey !== enKey) checkQuota('ru', ruKey);
+            // Refresh quotas (ElevenLabs only)
+            if (enProvider === 'elevenlabs' && enKey) checkQuota('en', enKey);
+            if (ruKey) checkQuota('ru', ruKey);
 
         } catch(e) {
             showErr(e.message);
-            $('ico1').textContent = '❌';
-            $('ico2').textContent = '❌';
+            ['1','2'].forEach(n => $('ico'+n).textContent = '❌');
         }
 
         $('genBtn').disabled = false;
         $('genBtn').innerHTML = '▶ Сгенерировать ещё раз';
     }
 
-    function showErr(msg) {
-        $('err').textContent = '⚠ ' + msg;
-        $('err').classList.add('on');
-    }
+    function showErr(msg) { $('err').textContent = '⚠ ' + msg; $('err').classList.add('on'); }
 </script>
 </body>
 </html>

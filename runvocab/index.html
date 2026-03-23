@@ -177,6 +177,37 @@
         .vname { font-size: 14px; font-weight: 700; line-height: 1.2; }
         .vdesc { font-size: 11px; color: var(--muted); }
 
+        /* Model selector */
+        .model-row {
+            margin-top: 10px;
+        }
+        .model-label {
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--muted);
+            margin-bottom: 5px;
+        }
+        .model-sel {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            padding: 7px 10px;
+            outline: none;
+            cursor: pointer;
+            transition: border-color .2s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238b949e'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 28px;
+        }
+        .model-sel:focus { border-color: var(--green); }
+        .model-sel option { background: var(--card); }
+
         /* Words */
         textarea {
             width: 100%;
@@ -394,6 +425,15 @@
                         <div><div class="vname">Sarah</div><div class="vdesc">жен · британский</div></div>
                     </label>
                 </div>
+                <div class="model-row">
+                    <div class="model-label">Модель</div>
+                    <select class="model-sel" id="enModel">
+                        <option value="eleven_multilingual_v2">Multilingual v2</option>
+                        <option value="eleven_v3">v3 — Макс. качество</option>
+                        <option value="eleven_flash_v2_5">Flash v2.5 — Быстрый</option>
+                        <option value="eleven_flash_v2">Flash v2 — Ультра-быстрый</option>
+                    </select>
+                </div>
             </div>
             <!-- Russian -->
             <div>
@@ -415,9 +455,17 @@
                         <div><div class="vname">Чарли</div><div class="vdesc">муж · разговорный</div></div>
                     </label>
                 </div>
+                <div class="model-row">
+                    <div class="model-label">Модель</div>
+                    <select class="model-sel" id="ruModel">
+                        <option value="eleven_multilingual_v2">Multilingual v2</option>
+                        <option value="eleven_v3">v3 — Макс. качество</option>
+                        <option value="eleven_flash_v2_5">Flash v2.5 — Быстрый</option>
+                    </select>
+                </div>
             </div>
         </div>
-        <div class="hint" style="margin-top:12px">Все голоса — eleven_multilingual_v2, произношение нейтив-уровня</div>
+        <div class="hint" style="margin-top:12px">Голоса ElevenLabs, произношение нейтив-уровня</div>
     </div>
 
     <!-- WORDS -->
@@ -540,15 +588,63 @@
         i.type = i.type === 'password' ? 'text' : 'password';
     };
 
-    // ── Voice option highlight ────────────────────────────────
+    // ── Settings: save / restore ──────────────────────────────
+    function saveSettings() {
+        const enVoiceEl = document.querySelector('input[name=enVoice]:checked');
+        const ruVoiceEl = document.querySelector('input[name=ruVoice]:checked');
+        if (enVoiceEl) setCookie('rv_en_voice', enVoiceEl.value, 365);
+        if (ruVoiceEl) setCookie('rv_ru_voice', ruVoiceEl.value, 365);
+        setCookie('rv_en_model', $('enModel').value, 365);
+        setCookie('rv_ru_model', $('ruModel').value, 365);
+        setCookie('rv_p1', $('p1').value, 365);
+        setCookie('rv_p2', $('p2').value, 365);
+    }
+
+    function restoreSettings() {
+        const enVoice = getCookie('rv_en_voice');
+        const ruVoice = getCookie('rv_ru_voice');
+        const enModel = getCookie('rv_en_model');
+        const ruModel = getCookie('rv_ru_model');
+        const p1 = getCookie('rv_p1');
+        const p2 = getCookie('rv_p2');
+
+        if (enVoice) {
+            const radio = document.querySelector(`input[name=enVoice][value="${enVoice}"]`);
+            if (radio) {
+                radio.checked = true;
+                document.querySelectorAll('#enVoices .voice-opt').forEach(v => v.classList.remove('sel'));
+                radio.closest('.voice-opt').classList.add('sel');
+            }
+        }
+        if (ruVoice) {
+            const radio = document.querySelector(`input[name=ruVoice][value="${ruVoice}"]`);
+            if (radio) {
+                radio.checked = true;
+                document.querySelectorAll('#ruVoices .voice-opt').forEach(v => v.classList.remove('sel'));
+                radio.closest('.voice-opt').classList.add('sel');
+            }
+        }
+        if (enModel) $('enModel').value = enModel;
+        if (ruModel) $('ruModel').value = ruModel;
+        if (p1) $('p1').value = p1;
+        if (p2) $('p2').value = p2;
+    }
+
+    restoreSettings();
+
+    // ── Voice option highlight + save ─────────────────────────
     document.querySelectorAll('.voice-list').forEach(list => {
         list.querySelectorAll('.voice-opt').forEach(el => {
             el.addEventListener('click', () => {
                 list.querySelectorAll('.voice-opt').forEach(v => v.classList.remove('sel'));
                 el.classList.add('sel');
+                saveSettings();
             });
         });
     });
+
+    $('enModel').addEventListener('change', saveSettings);
+    $('ruModel').addEventListener('change', saveSettings);
 
     // ── Sliders ───────────────────────────────────────────────
     [['p1','p1v'],['p2','p2v']].forEach(([id, vid]) => {
@@ -557,7 +653,8 @@
             const v = parseFloat(el.value);
             vl.textContent = parseFloat(v.toFixed(2)) + 'с';
         };
-        el.oninput = upd; upd();
+        el.oninput = () => { upd(); saveSettings(); };
+        upd();
     });
 
     // ── Word parser ───────────────────────────────────────────
@@ -577,13 +674,52 @@
         $('wCount').textContent = n ? `${n} слов` : '';
     };
 
-    // ── ElevenLabs TTS ────────────────────────────────────────
-    // Cache to avoid double-fetching same word for both tracks
-    const audioCache = new Map();
+    // ── IndexedDB audio cache ─────────────────────────────────
+    const IDB_NAME = 'rv_audio_cache';
+    const IDB_STORE = 'clips';
+    let idb = null;
 
-    async function tts(text, voiceId, apiKey) {
-        const key = `${voiceId}::${text}`;
-        if (audioCache.has(key)) return audioCache.get(key).slice(0);
+    (function openDB() {
+        const req = indexedDB.open(IDB_NAME, 2);
+        req.onupgradeneeded = e => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE);
+        };
+        req.onsuccess = e => { idb = e.target.result; };
+        req.onerror = () => {};
+    })();
+
+    function idbGet(key) {
+        return new Promise(resolve => {
+            if (!idb) return resolve(null);
+            const req = idb.transaction(IDB_STORE, 'readonly').objectStore(IDB_STORE).get(key);
+            req.onsuccess = () => resolve(req.result ?? null);
+            req.onerror = () => resolve(null);
+        });
+    }
+
+    function idbPut(key, buf) {
+        if (!idb) return;
+        try {
+            idb.transaction(IDB_STORE, 'readwrite').objectStore(IDB_STORE).put(buf, key);
+        } catch(_) {}
+    }
+
+    // ── ElevenLabs TTS ────────────────────────────────────────
+    const audioCache = new Map(); // in-memory layer over IDB
+    let cacheHits = 0;
+
+    async function tts(text, voiceId, apiKey, modelId = 'eleven_multilingual_v2') {
+        const key = `${voiceId}::${modelId}::${text}`;
+
+        if (audioCache.has(key)) { cacheHits++; return audioCache.get(key).slice(0); }
+
+        const persisted = await idbGet(key);
+        if (persisted) {
+            audioCache.set(key, persisted);
+            cacheHits++;
+            return persisted.slice(0);
+        }
 
         const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
             method: 'POST',
@@ -593,7 +729,7 @@
             },
             body: JSON.stringify({
                 text,
-                model_id: 'eleven_multilingual_v2',
+                model_id: modelId,
                 voice_settings: { stability: 0.45, similarity_boost: 0.80, style: 0.0, use_speaker_boost: true }
             })
         });
@@ -609,15 +745,18 @@
 
         const buf = await res.arrayBuffer();
         audioCache.set(key, buf.slice(0));
+        idbPut(key, buf.slice(0));
         return buf;
     }
 
-    // ── Get selected voice IDs ────────────────────────────────
+    // ── Get selected voice IDs and models ────────────────────
     function getVoiceIds() {
         const enId = document.querySelector('input[name=enVoice]:checked').value;
         const ruRadio = document.querySelector('input[name=ruVoice]:checked');
         const ruId = ruRadio.getAttribute('data-id');
-        return { enId, ruId };
+        const enModel = $('enModel').value;
+        const ruModel = $('ruModel').value;
+        return { enId, ruId, enModel, ruModel };
     }
 
     // ── Trim silence from both ends of an AudioBuffer ────────
@@ -746,8 +885,9 @@
         $('err').classList.remove('on');
         if (!apiKey) return showErr('Введи API ключ ElevenLabs');
         if (!words.length) return showErr('Добавь хотя бы одно слово');
+        cacheHits = 0;
 
-        const { enId, ruId } = getVoiceIds();
+        const { enId, ruId, enModel, ruModel } = getVoiceIds();
 
         $('genBtn').disabled = true;
         $('genBtn').innerHTML = '<span class="spin"></span>Генерация...';
@@ -773,14 +913,14 @@
             const tasks = [];
 
             words.forEach(({ en, ru }) => {
-                if (en) tasks.push({ text: en, voiceId: enId, lang: 'en' });
-                if (ru) tasks.push({ text: ru, voiceId: ruId, lang: 'ru' });
+                if (en) tasks.push({ text: en, voiceId: enId, modelId: enModel, lang: 'en' });
+                if (ru) tasks.push({ text: ru, voiceId: ruId, modelId: ruModel, lang: 'ru' });
             });
 
             // Deduplicate
             const seen = new Set();
             const uniqueTasks = tasks.filter(t => {
-                const k = `${t.voiceId}::${t.text}`;
+                const k = `${t.voiceId}::${t.modelId}::${t.text}`;
                 if (seen.has(k)) return false;
                 seen.add(k); return true;
             });
@@ -795,14 +935,14 @@
                 async function worker() {
                     while (idx < tasks.length) {
                         const t = tasks[idx++];
-                        const k = `${t.voiceId}::${t.text}`;
+                        const k = `${t.voiceId}::${t.modelId}::${t.text}`;
                         const pct = Math.round((done / total) * 100);
                         $('bar1').style.width = pct + '%';
                         $('bar2').style.width = pct + '%';
                         $('sub1').textContent = `${done+1}/${total} — ${t.text}`;
                         $('sub2').textContent = `${done+1}/${total} — ${t.text}`;
 
-                        const arr = await tts(t.text, t.voiceId, apiKey);
+                        const arr = await tts(t.text, t.voiceId, apiKey, t.modelId);
                         clips[k] = await decodeAndTrim(ctx, arr);
                         done++;
                     }
@@ -812,9 +952,8 @@
 
             await runPool(uniqueTasks);
 
-            const fromCache = audioCache.size - uniqueTasks.length;
-            if (fromCache > 0) {
-                $('cacheInfo').textContent = `♻ ${fromCache} клипов из кэша (не тратят квоту при повторной генерации)`;
+            if (cacheHits > 0) {
+                $('cacheInfo').textContent = `♻ ${cacheHits} клипов из кэша — квота не потрачена`;
                 $('cacheInfo').classList.add('on');
             }
 
@@ -828,8 +967,8 @@
             function buildTrack(mode) {
                 const bufs = [];
                 words.forEach(({ en, ru }, i) => {
-                    const enBuf = en ? clips[`${enId}::${en}`] : null;
-                    const ruBuf = ru ? clips[`${ruId}::${ru}`] : null;
+                    const enBuf = en ? clips[`${enId}::${enModel}::${en}`] : null;
+                    const ruBuf = ru ? clips[`${ruId}::${ruModel}::${ru}`] : null;
                     if (mode === 'ru-en') {
                         if (ruBuf) bufs.push(ruBuf);
                         if (enBuf) { if (ruBuf) bufs.push(sil1); bufs.push(enBuf); }

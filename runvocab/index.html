@@ -99,7 +99,108 @@
             background: var(--green);
         }
 
-        /* API Key */
+        /* ── Language summary cards ── */
+        .lang-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .lang-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: border-color .2s, box-shadow .2s;
+            user-select: none;
+        }
+        .lang-card:hover {
+            border-color: var(--green);
+            box-shadow: 0 0 0 1px rgba(63,185,80,0.15);
+        }
+
+        .lc-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .lc-flag { font-size: 20px; line-height: 1; }
+        .lc-title { font-size: 15px; font-weight: 700; flex: 1; }
+        .lc-gear { font-size: 14px; color: var(--muted); }
+
+        .lc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            margin-bottom: 5px;
+            gap: 6px;
+        }
+        .lc-label { color: var(--muted); flex-shrink: 0; }
+        .lc-val { color: var(--text); text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .lc-val.ok { color: var(--green); }
+        .lc-val.no { color: var(--muted); }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 200;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0;
+        }
+        @media (min-width: 480px) {
+            .modal-overlay { align-items: center; padding: 16px; }
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px 16px 0 0;
+            padding: 20px 20px 32px;
+            width: 100%;
+            max-width: 440px;
+            max-height: 92vh;
+            overflow-y: auto;
+        }
+        @media (min-width: 480px) {
+            .modal { border-radius: 16px; padding: 24px; }
+        }
+
+        .modal-hd {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .modal-lang {
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-section { margin-bottom: 20px; }
+        .modal-section:last-child { margin-bottom: 0; }
+
+        .section-label {
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--muted);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        /* ── Inputs ── */
         .key-row { display: flex; gap: 8px; }
         .input {
             flex: 1;
@@ -135,24 +236,7 @@
         .hint a { color: var(--blue); text-decoration: none; }
         .hint a:hover { text-decoration: underline; }
 
-        /* Two-column voice section */
-        .voices-cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        @media (max-width: 480px) { .voices-cols { grid-template-columns: 1fr; } }
-
-        .voices-col-label {
-            font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--muted);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
+        /* ── Voice options ── */
         .voice-list {
             display: flex;
             flex-direction: column;
@@ -177,16 +261,7 @@
         .vname { font-size: 14px; font-weight: 700; line-height: 1.2; }
         .vdesc { font-size: 11px; color: var(--muted); }
 
-        /* Model selector */
-        .model-row {
-            margin-top: 10px;
-        }
-        .model-label {
-            font-size: 11px;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--muted);
-            margin-bottom: 5px;
-        }
+        /* ── Model select ── */
         .model-sel {
             width: 100%;
             background: var(--bg);
@@ -195,7 +270,7 @@
             color: var(--text);
             font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
-            padding: 7px 10px;
+            padding: 8px 28px 8px 10px;
             outline: none;
             cursor: pointer;
             transition: border-color .2s;
@@ -203,37 +278,11 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238b949e'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 10px center;
-            padding-right: 28px;
         }
         .model-sel:focus { border-color: var(--green); }
         .model-sel option { background: var(--card); }
 
-        /* Words */
-        textarea {
-            width: 100%;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            padding: 12px 14px;
-            outline: none;
-            resize: vertical;
-            min-height: 160px;
-            line-height: 1.75;
-            transition: border-color .2s;
-        }
-        textarea:focus { border-color: var(--green); }
-        textarea::placeholder { color: var(--muted); }
-
-        .words-meta { display: flex; justify-content: space-between; margin-top: 8px; }
-        .fmt { font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
-        .cnt { font-size: 12px; color: var(--green); font-family: 'JetBrains Mono', monospace; }
-
-        /* Pauses */
-        .pause-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .pause-item label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+        /* ── Pause slider ── */
         .pause-ctrl { display: flex; align-items: center; gap: 10px; }
 
         input[type=range] {
@@ -257,11 +306,48 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 13px;
             color: var(--green);
-            min-width: 32px;
+            min-width: 36px;
             text-align: right;
         }
 
-        /* Button */
+        /* ── Quota ── */
+        .quota {
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 10px;
+            padding: 7px 10px;
+            border-radius: 6px;
+            display: none;
+        }
+        .quota.on { display: flex; align-items: center; gap: 8px; }
+        .quota-bar-wrap { flex: 1; height: 4px; background: var(--dim); border-radius: 2px; overflow: hidden; }
+        .quota-bar { height: 100%; border-radius: 2px; transition: width .4s; }
+        .quota-text { white-space: nowrap; color: var(--muted); }
+
+        /* ── Words ── */
+        textarea {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            padding: 12px 14px;
+            outline: none;
+            resize: vertical;
+            min-height: 160px;
+            line-height: 1.75;
+            transition: border-color .2s;
+        }
+        textarea:focus { border-color: var(--green); }
+        textarea::placeholder { color: var(--muted); }
+
+        .words-meta { display: flex; justify-content: space-between; margin-top: 8px; }
+        .fmt { font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+        .cnt { font-size: 12px; color: var(--green); font-family: 'JetBrains Mono', monospace; }
+
+        /* ── Generate button ── */
         .btn-gen {
             width: 100%;
             padding: 18px;
@@ -284,7 +370,7 @@
         }
         .btn-gen:disabled { background: var(--dim); color: var(--muted); cursor: not-allowed; transform: none; }
 
-        /* Progress */
+        /* ── Progress ── */
         .prog-card { display: none; }
         .prog-card.on { display: block; }
         .prog-list { display: flex; flex-direction: column; gap: 10px; }
@@ -302,7 +388,7 @@
         .prog-bar-wrap { height: 3px; background: var(--dim); border-radius: 2px; margin-top: 8px; overflow: hidden; }
         .prog-bar { height: 100%; background: var(--green); border-radius: 2px; transition: width .4s; width: 0%; }
 
-        /* Downloads */
+        /* ── Downloads ── */
         .dl-card { display: none; }
         .dl-card.on { display: block; }
         .dl-list { display: flex; flex-direction: column; gap: 10px; }
@@ -330,25 +416,11 @@
         }
         .dl-cta:hover { text-decoration: underline; }
 
-        /* Quota */
-        .quota {
-            font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            margin-top: 10px;
-            padding: 7px 10px;
-            border-radius: 6px;
-            display: none;
-        }
-        .quota.on { display: flex; align-items: center; gap: 8px; }
-        .quota-bar-wrap { flex: 1; height: 4px; background: var(--dim); border-radius: 2px; overflow: hidden; }
-        .quota-bar { height: 100%; border-radius: 2px; transition: width .4s; }
-        .quota-text { white-space: nowrap; color: var(--muted); }
-
-        /* Error */
+        /* ── Error ── */
         .err { display: none; padding: 14px 16px; background: rgba(248,81,73,.1); border: 1px solid rgba(248,81,73,.3); border-radius: 8px; color: var(--red); font-size: 14px; font-family: 'JetBrains Mono', monospace; line-height: 1.5; }
         .err.on { display: block; }
 
-        /* Cache info */
+        /* ── Cache info ── */
         .cache-info {
             font-size: 12px;
             color: var(--muted);
@@ -384,88 +456,30 @@
 
 <div class="wrap">
 
-    <!-- API KEY -->
-    <div class="card">
-        <div class="card-title">ElevenLabs API Key</div>
-        <div class="key-row">
-            <input class="input" type="password" id="apiKey" placeholder="sk_xxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off">
-            <button class="btn-icon" id="eyeBtn" title="Показать">👁</button>
-        </div>
-        <div class="hint">
-            <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">elevenlabs.io → Developers → API Keys</a> → Create Key<br>
-            Разрешения: <strong>Text to Speech</strong> (write) + <strong>Voices</strong> (read)
-        </div>
-        <div class="quota" id="quota">
-            <div class="quota-bar-wrap"><div class="quota-bar" id="quotaBar"></div></div>
-            <span class="quota-text" id="quotaText"></span>
-        </div>
-    </div>
-
-    <!-- VOICES -->
-    <div class="card">
-        <div class="card-title">Голоса</div>
-        <div class="voices-cols">
-            <!-- English -->
-            <div>
-                <div class="voices-col-label">🇬🇧 Английский</div>
-                <div class="voice-list" id="enVoices">
-                    <label class="voice-opt sel">
-                        <input type="radio" name="enVoice" value="TX3LPaxmHKxFdv7VOQHJ" checked>
-                        <span class="vflag">🇺🇸</span>
-                        <div><div class="vname">Liam</div><div class="vdesc">муж · американский</div></div>
-                    </label>
-                    <label class="voice-opt">
-                        <input type="radio" name="enVoice" value="nPczCjzI2devNBz1zQrb">
-                        <span class="vflag">🇺🇸</span>
-                        <div><div class="vname">Brian</div><div class="vdesc">муж · американский</div></div>
-                    </label>
-                    <label class="voice-opt">
-                        <input type="radio" name="enVoice" value="EXAVITQu4vr4xnSDxMaL">
-                        <span class="vflag">🇬🇧</span>
-                        <div><div class="vname">Sarah</div><div class="vdesc">жен · британский</div></div>
-                    </label>
-                </div>
-                <div class="model-row">
-                    <div class="model-label">Модель</div>
-                    <select class="model-sel" id="enModel">
-                        <option value="eleven_multilingual_v2">Multilingual v2</option>
-                        <option value="eleven_v3">v3 — Макс. качество</option>
-                        <option value="eleven_flash_v2_5">Flash v2.5 — Быстрый</option>
-                        <option value="eleven_flash_v2">Flash v2 — Ультра-быстрый</option>
-                    </select>
-                </div>
+    <!-- LANGUAGE CARDS -->
+    <div class="lang-cards">
+        <div class="lang-card" id="enCard" onclick="openModal('en')">
+            <div class="lc-header">
+                <span class="lc-flag">🇬🇧</span>
+                <span class="lc-title">English</span>
+                <span class="lc-gear">⚙</span>
             </div>
-            <!-- Russian -->
-            <div>
-                <div class="voices-col-label">🇷🇺 Русский</div>
-                <div class="voice-list" id="ruVoices">
-                    <label class="voice-opt sel">
-                        <input type="radio" name="ruVoice" value="ru_female_1" data-id="pFZP5JQG7iQjIQuC4Bku" checked>
-                        <span class="vflag">🇷🇺</span>
-                        <div><div class="vname">Лили</div><div class="vdesc">жен · нейтральный</div></div>
-                    </label>
-                    <label class="voice-opt">
-                        <input type="radio" name="ruVoice" value="ru_male_1" data-id="onwK4e9ZLuTAKqWW03F9">
-                        <span class="vflag">🇷🇺</span>
-                        <div><div class="vname">Дэниел</div><div class="vdesc">муж · глубокий</div></div>
-                    </label>
-                    <label class="voice-opt">
-                        <input type="radio" name="ruVoice" value="ru_male_2" data-id="IKne3meq5aSn9XLyUdCD">
-                        <span class="vflag">🇷🇺</span>
-                        <div><div class="vname">Чарли</div><div class="vdesc">муж · разговорный</div></div>
-                    </label>
-                </div>
-                <div class="model-row">
-                    <div class="model-label">Модель</div>
-                    <select class="model-sel" id="ruModel">
-                        <option value="eleven_multilingual_v2">Multilingual v2</option>
-                        <option value="eleven_v3">v3 — Макс. качество</option>
-                        <option value="eleven_flash_v2_5">Flash v2.5 — Быстрый</option>
-                    </select>
-                </div>
-            </div>
+            <div class="lc-row"><span class="lc-label">голос</span><span class="lc-val" id="enSumVoice">Liam</span></div>
+            <div class="lc-row"><span class="lc-label">модель</span><span class="lc-val" id="enSumModel">Multilingual v2</span></div>
+            <div class="lc-row"><span class="lc-label">пауза</span><span class="lc-val" id="enSumPause">1с</span></div>
+            <div class="lc-row"><span class="lc-label">api key</span><span class="lc-val no" id="enSumKey">не задан</span></div>
         </div>
-        <div class="hint" style="margin-top:12px">Голоса ElevenLabs, произношение нейтив-уровня</div>
+        <div class="lang-card" id="ruCard" onclick="openModal('ru')">
+            <div class="lc-header">
+                <span class="lc-flag">🇷🇺</span>
+                <span class="lc-title">Русский</span>
+                <span class="lc-gear">⚙</span>
+            </div>
+            <div class="lc-row"><span class="lc-label">голос</span><span class="lc-val" id="ruSumVoice">Лили</span></div>
+            <div class="lc-row"><span class="lc-label">модель</span><span class="lc-val" id="ruSumModel">Multilingual v2</span></div>
+            <div class="lc-row"><span class="lc-label">пауза</span><span class="lc-val" id="ruSumPause">1с</span></div>
+            <div class="lc-row"><span class="lc-label">api key</span><span class="lc-val no" id="ruSumKey">не задан</span></div>
+        </div>
     </div>
 
     <!-- WORDS -->
@@ -477,27 +491,6 @@
             <span class="cnt" id="wCount"></span>
         </div>
         <input class="input" type="text" id="listName" placeholder="Word List Name" style="margin-top:10px">
-    </div>
-
-    <!-- PAUSES -->
-    <div class="card">
-        <div class="card-title">Паузы</div>
-        <div class="pause-grid">
-            <div class="pause-item">
-                <label>слово → перевод</label>
-                <div class="pause-ctrl">
-                    <input type="range" id="p1" min="0.5" max="8" step="0.25" value="1">
-                    <span class="rval" id="p1v">1с</span>
-                </div>
-            </div>
-            <div class="pause-item">
-                <label>между парами</label>
-                <div class="pause-ctrl">
-                    <input type="range" id="p2" min="0.5" max="8" step="0.25" value="1">
-                    <span class="rval" id="p2v">1с</span>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- ERROR -->
@@ -538,13 +531,140 @@
 
 </div>
 
+<!-- ── EN MODAL ── -->
+<div class="modal-overlay" id="enModal">
+  <div class="modal">
+    <div class="modal-hd">
+        <div class="modal-lang">🇬🇧 English</div>
+        <button class="btn-icon" onclick="closeModal('en')">✕</button>
+    </div>
+
+    <div class="modal-section">
+        <div class="section-label">API Key</div>
+        <div class="key-row">
+            <input class="input" type="password" id="enApiKey" placeholder="sk_xxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+            <button class="btn-icon" id="enEyeBtn">👁</button>
+        </div>
+        <div class="hint">
+            <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">elevenlabs.io → API Keys</a> → Create Key
+        </div>
+        <div class="quota" id="enQuota">
+            <div class="quota-bar-wrap"><div class="quota-bar" id="enQuotaBar"></div></div>
+            <span class="quota-text" id="enQuotaText"></span>
+        </div>
+    </div>
+
+    <div class="modal-section">
+        <div class="section-label">Голос</div>
+        <div class="voice-list" id="enVoices">
+            <label class="voice-opt sel">
+                <input type="radio" name="enVoice" value="TX3LPaxmHKxFdv7VOQHJ" checked>
+                <span class="vflag">🇺🇸</span>
+                <div><div class="vname">Liam</div><div class="vdesc">муж · американский</div></div>
+            </label>
+            <label class="voice-opt">
+                <input type="radio" name="enVoice" value="nPczCjzI2devNBz1zQrb">
+                <span class="vflag">🇺🇸</span>
+                <div><div class="vname">Brian</div><div class="vdesc">муж · американский</div></div>
+            </label>
+            <label class="voice-opt">
+                <input type="radio" name="enVoice" value="EXAVITQu4vr4xnSDxMaL">
+                <span class="vflag">🇬🇧</span>
+                <div><div class="vname">Sarah</div><div class="vdesc">жен · британский</div></div>
+            </label>
+        </div>
+    </div>
+
+    <div class="modal-section">
+        <div class="section-label">Модель</div>
+        <select class="model-sel" id="enModel">
+            <option value="eleven_multilingual_v2">Multilingual v2</option>
+            <option value="eleven_v3">v3 — Макс. качество</option>
+            <option value="eleven_flash_v2_5">Flash v2.5 — Быстрый</option>
+            <option value="eleven_flash_v2">Flash v2 — Ультра-быстрый</option>
+        </select>
+    </div>
+
+    <div class="modal-section">
+        <div class="section-label">Пауза между словом и переводом</div>
+        <div class="pause-ctrl">
+            <input type="range" id="p1" min="0.5" max="8" step="0.25" value="1">
+            <span class="rval" id="p1v">1с</span>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RU MODAL ── -->
+<div class="modal-overlay" id="ruModal">
+  <div class="modal">
+    <div class="modal-hd">
+        <div class="modal-lang">🇷🇺 Русский</div>
+        <button class="btn-icon" onclick="closeModal('ru')">✕</button>
+    </div>
+
+    <div class="modal-section">
+        <div class="section-label">API Key</div>
+        <div class="key-row">
+            <input class="input" type="password" id="ruApiKey" placeholder="sk_xxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+            <button class="btn-icon" id="ruEyeBtn">👁</button>
+        </div>
+        <div class="hint">
+            <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">elevenlabs.io → API Keys</a> → Create Key<br>
+            Можно использовать тот же ключ, что для английского
+        </div>
+        <div class="quota" id="ruQuota">
+            <div class="quota-bar-wrap"><div class="quota-bar" id="ruQuotaBar"></div></div>
+            <span class="quota-text" id="ruQuotaText"></span>
+        </div>
+    </div>
+
+    <div class="modal-section">
+        <div class="section-label">Голос</div>
+        <div class="voice-list" id="ruVoices">
+            <label class="voice-opt sel">
+                <input type="radio" name="ruVoice" value="ru_female_1" data-id="pFZP5JQG7iQjIQuC4Bku" checked>
+                <span class="vflag">🇷🇺</span>
+                <div><div class="vname">Лили</div><div class="vdesc">жен · нейтральный</div></div>
+            </label>
+            <label class="voice-opt">
+                <input type="radio" name="ruVoice" value="ru_male_1" data-id="onwK4e9ZLuTAKqWW03F9">
+                <span class="vflag">🇷🇺</span>
+                <div><div class="vname">Дэниел</div><div class="vdesc">муж · глубокий</div></div>
+            </label>
+            <label class="voice-opt">
+                <input type="radio" name="ruVoice" value="ru_male_2" data-id="IKne3meq5aSn9XLyUdCD">
+                <span class="vflag">🇷🇺</span>
+                <div><div class="vname">Чарли</div><div class="vdesc">муж · разговорный</div></div>
+            </label>
+        </div>
+    </div>
+
+    <div class="modal-section">
+        <div class="section-label">Модель</div>
+        <select class="model-sel" id="ruModel">
+            <option value="eleven_multilingual_v2">Multilingual v2</option>
+            <option value="eleven_v3">v3 — Макс. качество</option>
+            <option value="eleven_flash_v2_5">Flash v2.5 — Быстрый</option>
+        </select>
+    </div>
+
+    <div class="modal-section">
+        <div class="section-label">Пауза между парами слов</div>
+        <div class="pause-ctrl">
+            <input type="range" id="p2" min="0.5" max="8" step="0.25" value="1">
+            <span class="rval" id="p2v">1с</span>
+        </div>
+    </div>
+  </div>
+</div>
+
 <script>
     const $ = id => document.getElementById(id);
 
-    // ── API key cookie ────────────────────────────────────────
-    const COOKIE_KEY = 'rv_api_key';
-    const getCookie = name => (document.cookie.split(';').map(c => c.trim())
-        .find(c => c.startsWith(name + '=')) || '').slice(name.length + 1);
+    // ── Cookies ───────────────────────────────────────────────
+    const getCookie = name => decodeURIComponent((document.cookie.split(';').map(c => c.trim())
+        .find(c => c.startsWith(name + '=')) || '').slice(name.length + 1));
     const setCookie = (name, val, days) => {
         const exp = new Date(Date.now() + days * 864e5).toUTCString();
         document.cookie = `${name}=${encodeURIComponent(val)};expires=${exp};path=/;SameSite=Strict;Secure`;
@@ -552,88 +672,163 @@
 
     const isValidKey = key => /^sk_[a-f0-9]{40,}$/i.test(key);
 
-    const savedKey = getCookie(COOKIE_KEY);
-    if (savedKey) { $('apiKey').value = decodeURIComponent(savedKey); if (isValidKey(savedKey)) checkQuota(savedKey); }
+    // ── Model display names ───────────────────────────────────
+    const MODEL_SHORT = {
+        'eleven_multilingual_v2': 'Multilingual v2',
+        'eleven_v3': 'v3',
+        'eleven_flash_v2_5': 'Flash v2.5',
+        'eleven_flash_v2': 'Flash v2',
+    };
 
-    $('apiKey').addEventListener('change', () => {
-        const key = $('apiKey').value.trim();
-        setCookie(COOKIE_KEY, key, 365);
-        if (isValidKey(key)) checkQuota(key); else $('quota').classList.remove('on');
+    // ── Summary cards ─────────────────────────────────────────
+    function updateSummary() {
+        // EN
+        const enChecked = document.querySelector('input[name=enVoice]:checked');
+        const enVoiceName = enChecked ? enChecked.closest('.voice-opt').querySelector('.vname').textContent : '—';
+        $('enSumVoice').textContent = enVoiceName;
+        $('enSumModel').textContent = MODEL_SHORT[$('enModel').value] || $('enModel').value;
+        $('enSumPause').textContent = $('p1').value + 'с';
+        const enKey = $('enApiKey').value.trim();
+        const enOk = isValidKey(enKey);
+        $('enSumKey').textContent = enOk ? '✓ задан' : 'не задан';
+        $('enSumKey').className = 'lc-val ' + (enOk ? 'ok' : 'no');
+
+        // RU
+        const ruChecked = document.querySelector('input[name=ruVoice]:checked');
+        const ruVoiceName = ruChecked ? ruChecked.closest('.voice-opt').querySelector('.vname').textContent : '—';
+        $('ruSumVoice').textContent = ruVoiceName;
+        $('ruSumModel').textContent = MODEL_SHORT[$('ruModel').value] || $('ruModel').value;
+        $('ruSumPause').textContent = $('p2').value + 'с';
+        const ruKey = $('ruApiKey').value.trim();
+        const ruOk = isValidKey(ruKey);
+        $('ruSumKey').textContent = ruOk ? '✓ задан' : 'не задан';
+        $('ruSumKey').className = 'lc-val ' + (ruOk ? 'ok' : 'no');
+    }
+
+    // ── Settings save / restore ───────────────────────────────
+    function saveSettings() {
+        setCookie('rv_en_api_key', $('enApiKey').value.trim(), 365);
+        setCookie('rv_ru_api_key', $('ruApiKey').value.trim(), 365);
+        const enV = document.querySelector('input[name=enVoice]:checked');
+        const ruV = document.querySelector('input[name=ruVoice]:checked');
+        if (enV) setCookie('rv_en_voice', enV.value, 365);
+        if (ruV) setCookie('rv_ru_voice', ruV.value, 365);
+        setCookie('rv_en_model', $('enModel').value, 365);
+        setCookie('rv_ru_model', $('ruModel').value, 365);
+        setCookie('rv_p1', $('p1').value, 365);
+        setCookie('rv_p2', $('p2').value, 365);
+        updateSummary();
+    }
+
+    function restoreSettings() {
+        const enKey = getCookie('rv_en_api_key');
+        const ruKey = getCookie('rv_ru_api_key');
+        if (enKey) $('enApiKey').value = enKey;
+        if (ruKey) $('ruApiKey').value = ruKey;
+
+        const enVoice = getCookie('rv_en_voice');
+        const ruVoice = getCookie('rv_ru_voice');
+        if (enVoice) {
+            const r = document.querySelector(`input[name=enVoice][value="${enVoice}"]`);
+            if (r) {
+                r.checked = true;
+                document.querySelectorAll('#enVoices .voice-opt').forEach(v => v.classList.remove('sel'));
+                r.closest('.voice-opt').classList.add('sel');
+            }
+        }
+        if (ruVoice) {
+            const r = document.querySelector(`input[name=ruVoice][value="${ruVoice}"]`);
+            if (r) {
+                r.checked = true;
+                document.querySelectorAll('#ruVoices .voice-opt').forEach(v => v.classList.remove('sel'));
+                r.closest('.voice-opt').classList.add('sel');
+            }
+        }
+
+        const enModel = getCookie('rv_en_model');
+        const ruModel = getCookie('rv_ru_model');
+        if (enModel) $('enModel').value = enModel;
+        if (ruModel) $('ruModel').value = ruModel;
+
+        const p1 = getCookie('rv_p1');
+        const p2 = getCookie('rv_p2');
+        if (p1) $('p1').value = p1;
+        if (p2) $('p2').value = p2;
+
+        updateSliderDisplay('p1', 'p1v');
+        updateSliderDisplay('p2', 'p2v');
+        updateSummary();
+
+        // Check quotas for saved keys
+        if (enKey && isValidKey(enKey)) checkQuota('en', enKey);
+        if (ruKey && isValidKey(ruKey)) checkQuota('ru', ruKey);
+    }
+
+    // ── Modal open / close ────────────────────────────────────
+    function openModal(lang) {
+        $(`${lang}Modal`).classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeModal(lang) {
+        $(`${lang}Modal`).classList.remove('open');
+        document.body.style.overflow = '';
+        saveSettings();
+    }
+
+    // Close on overlay click
+    ['en', 'ru'].forEach(lang => {
+        $(`${lang}Modal`).addEventListener('click', e => {
+            if (e.target === $(`${lang}Modal`)) closeModal(lang);
+        });
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') ['en', 'ru'].forEach(lang => closeModal(lang));
+    });
+
+    // ── Eye toggles ───────────────────────────────────────────
+    ['en', 'ru'].forEach(lang => {
+        $(`${lang}EyeBtn`).onclick = () => {
+            const i = $(`${lang}ApiKey`);
+            i.type = i.type === 'password' ? 'text' : 'password';
+        };
+    });
+
+    // ── API key change → quota check ──────────────────────────
+    ['en', 'ru'].forEach(lang => {
+        $(`${lang}ApiKey`).addEventListener('change', () => {
+            const key = $(`${lang}ApiKey`).value.trim();
+            saveSettings();
+            if (isValidKey(key)) checkQuota(lang, key);
+            else $(`${lang}Quota`).classList.remove('on');
+        });
     });
 
     // ── Quota check ───────────────────────────────────────────
-    async function checkQuota(apiKey) {
+    async function checkQuota(lang, apiKey) {
         try {
             const res = await fetch('https://api.elevenlabs.io/v1/user/subscription', {
                 headers: { 'xi-api-key': apiKey }
             });
-            if (!res.ok) { $('quota').classList.remove('on'); return; }
+            if (!res.ok) { $(`${lang}Quota`).classList.remove('on'); return; }
             const data = await res.json();
             const used = data.character_count ?? 0;
             const limit = data.character_limit ?? 0;
             const pct = limit ? Math.round(used / limit * 100) : 0;
             const free = (limit - used).toLocaleString('ru');
             const color = pct > 80 ? 'var(--red)' : pct > 50 ? '#e3b341' : 'var(--green)';
-            $('quotaBar').style.width = pct + '%';
-            $('quotaBar').style.background = color;
-            $('quotaText').style.color = color;
-            $('quotaText').textContent = `${free} симв. осталось (${100 - pct}%)`;
-            $('quota').classList.add('on');
-        } catch(_) { $('quota').classList.remove('on'); }
+            $(`${lang}QuotaBar`).style.width = pct + '%';
+            $(`${lang}QuotaBar`).style.background = color;
+            $(`${lang}QuotaText`).style.color = color;
+            $(`${lang}QuotaText`).textContent = `${free} симв. осталось (${100 - pct}%)`;
+            $(`${lang}Quota`).classList.add('on');
+        } catch(_) { $(`${lang}Quota`).classList.remove('on'); }
     }
-
-    // ── Eye toggle ────────────────────────────────────────────
-    $('eyeBtn').onclick = () => {
-        const i = $('apiKey');
-        i.type = i.type === 'password' ? 'text' : 'password';
-    };
-
-    // ── Settings: save / restore ──────────────────────────────
-    function saveSettings() {
-        const enVoiceEl = document.querySelector('input[name=enVoice]:checked');
-        const ruVoiceEl = document.querySelector('input[name=ruVoice]:checked');
-        if (enVoiceEl) setCookie('rv_en_voice', enVoiceEl.value, 365);
-        if (ruVoiceEl) setCookie('rv_ru_voice', ruVoiceEl.value, 365);
-        setCookie('rv_en_model', $('enModel').value, 365);
-        setCookie('rv_ru_model', $('ruModel').value, 365);
-        setCookie('rv_p1', $('p1').value, 365);
-        setCookie('rv_p2', $('p2').value, 365);
-    }
-
-    function restoreSettings() {
-        const enVoice = getCookie('rv_en_voice');
-        const ruVoice = getCookie('rv_ru_voice');
-        const enModel = getCookie('rv_en_model');
-        const ruModel = getCookie('rv_ru_model');
-        const p1 = getCookie('rv_p1');
-        const p2 = getCookie('rv_p2');
-
-        if (enVoice) {
-            const radio = document.querySelector(`input[name=enVoice][value="${enVoice}"]`);
-            if (radio) {
-                radio.checked = true;
-                document.querySelectorAll('#enVoices .voice-opt').forEach(v => v.classList.remove('sel'));
-                radio.closest('.voice-opt').classList.add('sel');
-            }
-        }
-        if (ruVoice) {
-            const radio = document.querySelector(`input[name=ruVoice][value="${ruVoice}"]`);
-            if (radio) {
-                radio.checked = true;
-                document.querySelectorAll('#ruVoices .voice-opt').forEach(v => v.classList.remove('sel'));
-                radio.closest('.voice-opt').classList.add('sel');
-            }
-        }
-        if (enModel) $('enModel').value = enModel;
-        if (ruModel) $('ruModel').value = ruModel;
-        if (p1) $('p1').value = p1;
-        if (p2) $('p2').value = p2;
-    }
-
-    restoreSettings();
 
     // ── Voice option highlight + save ─────────────────────────
-    document.querySelectorAll('.voice-list').forEach(list => {
+    ['en', 'ru'].forEach(lang => {
+        const list = $(`${lang}Voices`);
         list.querySelectorAll('.voice-opt').forEach(el => {
             el.addEventListener('click', () => {
                 list.querySelectorAll('.voice-opt').forEach(v => v.classList.remove('sel'));
@@ -647,15 +842,18 @@
     $('ruModel').addEventListener('change', saveSettings);
 
     // ── Sliders ───────────────────────────────────────────────
+    function updateSliderDisplay(id, vid) {
+        const v = parseFloat($(id).value);
+        $(vid).textContent = parseFloat(v.toFixed(2)) + 'с';
+    }
+
     [['p1','p1v'],['p2','p2v']].forEach(([id, vid]) => {
-        const el = $(id), vl = $(vid);
-        const upd = () => {
-            const v = parseFloat(el.value);
-            vl.textContent = parseFloat(v.toFixed(2)) + 'с';
-        };
-        el.oninput = () => { upd(); saveSettings(); };
-        upd();
+        $(id).oninput = () => { updateSliderDisplay(id, vid); saveSettings(); };
+        updateSliderDisplay(id, vid);
     });
+
+    // ── Restore on load ───────────────────────────────────────
+    restoreSettings();
 
     // ── Word parser ───────────────────────────────────────────
     function parseWords(text) {
@@ -706,7 +904,7 @@
     }
 
     // ── ElevenLabs TTS ────────────────────────────────────────
-    const audioCache = new Map(); // in-memory layer over IDB
+    const audioCache = new Map();
     let cacheHits = 0;
 
     async function tts(text, voiceId, apiKey, modelId = 'eleven_multilingual_v2') {
@@ -723,10 +921,7 @@
 
         const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
             method: 'POST',
-            headers: {
-                'xi-api-key': apiKey,
-                'Content-Type': 'application/json'
-            },
+            headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 text,
                 model_id: modelId,
@@ -749,46 +944,19 @@
         return buf;
     }
 
-    // ── Get selected voice IDs and models ────────────────────
-    function getVoiceIds() {
+    // ── Get selected voice IDs and models ─────────────────────
+    function getConfig() {
         const enId = document.querySelector('input[name=enVoice]:checked').value;
         const ruRadio = document.querySelector('input[name=ruVoice]:checked');
         const ruId = ruRadio.getAttribute('data-id');
         const enModel = $('enModel').value;
         const ruModel = $('ruModel').value;
-        return { enId, ruId, enModel, ruModel };
-    }
-
-    // ── Trim silence from both ends of an AudioBuffer ────────
-    // MP3 decoded via decodeAudioData has encoder/decoder padding (~0.5–1s)
-    // This removes leading and trailing silence below the threshold.
-    function trimSilence(buf, threshold = 0.01, padSec = 0.04) {
-        const sr = buf.sampleRate;
-        const ch = buf.numberOfChannels;
-        const data = buf.getChannelData(0); // use channel 0 for detection
-        const pad = Math.ceil(padSec * sr);  // small pad to avoid cutting breath
-
-        // Find first sample above threshold
-        let start = 0;
-        for (let i = 0; i < data.length; i++) {
-            if (Math.abs(data[i]) > threshold) { start = Math.max(0, i - pad); break; }
-        }
-
-        // Find last sample above threshold
-        let end = data.length;
-        for (let i = data.length - 1; i >= 0; i--) {
-            if (Math.abs(data[i]) > threshold) { end = Math.min(data.length, i + pad); break; }
-        }
-
-        if (end <= start) return buf; // all silence, return as-is
-
-        const trimmed = buf.context
-            ? buf.context.createBuffer(ch, end - start, sr)
-            : new AudioBuffer({ numberOfChannels: ch, length: end - start, sampleRate: sr });
-
-        // fallback: we'll trim in the concat step using offsets
-        // Actually AudioBuffer has no .context ref in all browsers, so we pass ctx separately
-        return { start, end, buf }; // return marker object
+        const enApiKey = $('enApiKey').value.trim();
+        const ruApiKey = $('ruApiKey').value.trim();
+        // Allow one key for both
+        const enKey = enApiKey || ruApiKey;
+        const ruKey = ruApiKey || enApiKey;
+        return { enId, ruId, enModel, ruModel, enKey, ruKey };
     }
 
     // ── Trim + decode helper ──────────────────────────────────
@@ -872,22 +1040,21 @@
         return new Blob(mp3Data, { type: 'audio/mp3' });
     }
 
-    // ── Fetch all audio in parallel, then build two tracks ────
+    // ── Generate ──────────────────────────────────────────────
     $('genBtn').onclick = generate;
 
     async function generate() {
-        const apiKey = $('apiKey').value.trim();
         const words = parseWords($('wordsInput').value);
         const listName = $('listName').value.trim() || 'Word List';
         const p1 = parseFloat($('p1').value);
         const p2 = parseFloat($('p2').value);
 
         $('err').classList.remove('on');
-        if (!apiKey) return showErr('Введи API ключ ElevenLabs');
         if (!words.length) return showErr('Добавь хотя бы одно слово');
-        cacheHits = 0;
 
-        const { enId, ruId, enModel, ruModel } = getVoiceIds();
+        const { enId, ruId, enModel, ruModel, enKey, ruKey } = getConfig();
+        if (!enKey) return showErr('Введи API ключ в настройках языка (⚙)');
+        cacheHits = 0;
 
         $('genBtn').disabled = true;
         $('genBtn').innerHTML = '<span class="spin"></span>Генерация...';
@@ -896,7 +1063,6 @@
         $('dlList').innerHTML = '';
         $('cacheInfo').classList.remove('on');
 
-        // Reset progress
         ['1','2'].forEach(n => {
             $('ico'+n).textContent = '🔄';
             $('sub'+n).textContent = 'загрузка аудио...';
@@ -905,19 +1071,14 @@
 
         try {
             const ctx = new AudioContext({ sampleRate: 44100 });
-
-            // ── Step 1: fetch all unique audio clips ──────────────
-            // We need: each EN word + each RU word
-            // Fetch them all with a concurrency limit of 3 to be polite to the API
-            const clips = {}; // key -> AudioBuffer
+            const clips = {};
             const tasks = [];
 
             words.forEach(({ en, ru }) => {
-                if (en) tasks.push({ text: en, voiceId: enId, modelId: enModel, lang: 'en' });
-                if (ru) tasks.push({ text: ru, voiceId: ruId, modelId: ruModel, lang: 'ru' });
+                if (en) tasks.push({ text: en, voiceId: enId, modelId: enModel, apiKey: enKey, lang: 'en' });
+                if (ru) tasks.push({ text: ru, voiceId: ruId, modelId: ruModel, apiKey: ruKey, lang: 'ru' });
             });
 
-            // Deduplicate
             const seen = new Set();
             const uniqueTasks = tasks.filter(t => {
                 const k = `${t.voiceId}::${t.modelId}::${t.text}`;
@@ -928,21 +1089,19 @@
             const total = uniqueTasks.length;
             let done = 0;
 
-            // Fetch with concurrency=3
             const CONCURRENCY = 2;
-            async function runPool(tasks) {
+            async function runPool(pool) {
                 let idx = 0;
                 async function worker() {
-                    while (idx < tasks.length) {
-                        const t = tasks[idx++];
+                    while (idx < pool.length) {
+                        const t = pool[idx++];
                         const k = `${t.voiceId}::${t.modelId}::${t.text}`;
                         const pct = Math.round((done / total) * 100);
                         $('bar1').style.width = pct + '%';
                         $('bar2').style.width = pct + '%';
                         $('sub1').textContent = `${done+1}/${total} — ${t.text}`;
                         $('sub2').textContent = `${done+1}/${total} — ${t.text}`;
-
-                        const arr = await tts(t.text, t.voiceId, apiKey, t.modelId);
+                        const arr = await tts(t.text, t.voiceId, t.apiKey, t.modelId);
                         clips[k] = await decodeAndTrim(ctx, arr);
                         done++;
                     }
@@ -957,7 +1116,6 @@
                 $('cacheInfo').classList.add('on');
             }
 
-            // ── Step 2: assemble two tracks ───────────────────────
             $('sub1').textContent = 'сборка трека...';
             $('sub2').textContent = 'сборка трека...';
 
@@ -991,7 +1149,6 @@
             $('sub1').textContent = 'готово';
             $('sub2').textContent = 'готово';
 
-            // ── Step 3: create download links ─────────────────────
             const tracks = [
                 { buf: track1, label: 'РУ → АНГ', fname: `${listName} ru-en.mp3`, flag: '🇷🇺→🇬🇧' },
                 { buf: track2, label: 'АНГ → РУ', fname: `${listName} en-ru.mp3`, flag: '🇬🇧→🇷🇺' },
@@ -1020,6 +1177,10 @@
             $('dlCard').classList.add('on');
             ctx.close();
 
+            // Refresh quotas
+            if (enKey) checkQuota('en', enKey);
+            if (ruKey && ruKey !== enKey) checkQuota('ru', ruKey);
+
         } catch(e) {
             showErr(e.message);
             $('ico1').textContent = '❌';
@@ -1028,7 +1189,6 @@
 
         $('genBtn').disabled = false;
         $('genBtn').innerHTML = '▶ Сгенерировать ещё раз';
-        checkQuota(apiKey);
     }
 
     function showErr(msg) {
